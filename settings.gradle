@@ -1,0 +1,2 @@
+rootProject.name='Budżet domowy'
+include ':app'
