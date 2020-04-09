@@ -12,8 +12,10 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <TextView
             android:id="@+id/textView"
@@ -25,20 +27,149 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/sport"
+            app:layout_constraintBottom_toTopOf="@+id/imageButton3"
+            app:layout_constraintEnd_toStartOf="@+id/imageView3"
+            app:layout_constraintStart_toStartOf="@+id/imageButton3"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/imageButton6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/restauracja"
+            app:layout_constraintBottom_toTopOf="@+id/imageButton7"
+            app:layout_constraintEnd_toEndOf="@+id/imageButton7"
+            app:layout_constraintStart_toEndOf="@+id/imageView3"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/imageButton7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/kosmetyki"
+            app:layout_constraintBottom_toTopOf="@+id/imageButton8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView3"
+            app:layout_constraintTop_toBottomOf="@+id/imageButton6" />
+
+        <ImageButton
+            android:id="@+id/imageButton8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/media"
+            app:layout_constraintBottom_toTopOf="@+id/imageButton9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView3"
+            app:layout_constraintTop_toBottomOf="@+id/imageButton7" />
+
+        <ImageButton
+            android:id="@+id/imageButton9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/taxi"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/imageButton8"
+            app:layout_constraintStart_toEndOf="@+id/imageView3"
+            app:layout_constraintTop_toBottomOf="@+id/imageButton8" />
+
+        <ImageButton
+            android:id="@+id/imageButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ubrania"
+            app:layout_constraintBottom_toTopOf="@+id/imageButton4"
+            app:layout_constraintEnd_toStartOf="@+id/imageView3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageButton2" />
+
+        <ImageButton
+            android:id="@+id/imageButton4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/transport"
+            app:layout_constraintBottom_toTopOf="@+id/imageButton5"
+            app:layout_constraintEnd_toStartOf="@+id/imageView3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageButton3" />
+
+        <ImageButton
+            android:id="@+id/imageButton5"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@drawable/zdrowie"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView3"
+            app:layout_constraintStart_toStartOf="@+id/imageButton4"
+            app:layout_constraintTop_toBottomOf="@+id/imageButton4" />
+
+        <ImageButton
+            android:id="@+id/imageButton10"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@drawable/zwierzeta"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButton5"
+            app:layout_constraintEnd_toStartOf="@+id/imageButton11"
+            app:layout_constraintStart_toEndOf="@+id/imageButton5" />
+
+        <ImageButton
+            android:id="@+id/imageButton13"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:background="@drawable/dom"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButton2"
+            app:layout_constraintEnd_toStartOf="@+id/imageButton14"
+            app:layout_constraintStart_toEndOf="@+id/imageButton2" />
+
+        <ImageButton
+            android:id="@+id/imageButton14"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:background="@drawable/rozrywka"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButton2"
+            app:layout_constraintEnd_toStartOf="@+id/imageButton6"
+            app:layout_constraintStart_toEndOf="@+id/imageButton13" />
+
+        <ImageButton
+            android:id="@+id/imageButton11"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@drawable/zywnosc"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButton9"
+            app:layout_constraintEnd_toStartOf="@+id/imageButton9"
+            app:layout_constraintStart_toEndOf="@+id/imageButton10" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="60dp"
+            app:layout_constraintBottom_toTopOf="@+id/imageButton10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageButton13"
+            app:srcCompat="@drawable/chart" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="416dp"
-        android:layout_height="200dp"
+        android:layout_width="0dp"
+        android:layout_height="170dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
             android:id="@+id/addIncomeButton"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
+            android:layout_width="85dp"
+            android:layout_height="85dp"
             android:layout_marginEnd="50dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/rounded_button_income"
@@ -50,8 +181,8 @@
 
         <Button
             android:id="@+id/addIncomeButton2"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
+            android:layout_width="85dp"
+            android:layout_height="85dp"
             android:layout_marginStart="50dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/rounded_button_expense"
@@ -65,9 +196,9 @@
             android:id="@+id/button2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="100dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="85dp"
             android:background="@color/primaryColor"
             android:text="Saldo 10 124,27 zł"
             android:textColor="@color/cardview_light_background"
@@ -76,6 +207,26 @@
             app:layout_constraintHorizontal_bias="0.27"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:background="@drawable/hamburger_menu"
+            app:layout_constraintBottom_toBottomOf="@+id/button2"
+            app:layout_constraintEnd_toStartOf="@+id/button2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/button2" />
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:background="@drawable/hamburger_menu"
+            app:layout_constraintBottom_toBottomOf="@+id/button2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/button2"
+            app:layout_constraintTop_toTopOf="@+id/button2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
