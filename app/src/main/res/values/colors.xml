@@ -5,6 +5,6 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="backgroundColor">#424242</color>
     <color name="primaryColor">#7ac794</color>
-    <color name="incomeColor">#7ac794</color>
-    <color name="expenseColor">#eb514e</color>
+    <color name="incomeColor">#ff7ac794</color>
+    <color name="expenseColor">#ffeb514e</color>
 </resources>

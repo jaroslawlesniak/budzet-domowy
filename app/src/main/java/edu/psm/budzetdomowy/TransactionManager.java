@@ -5,18 +5,25 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
+import edu.psm.budzetdomowy.utils.Category;
 import edu.psm.budzetdomowy.utils.Transaction;
 
 public class TransactionManager extends AppCompatActivity implements View.OnClickListener {
@@ -25,6 +32,7 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
     int transactionType;
 
     TextView dateTextView;
+
     final Calendar calendar = Calendar.getInstance();
 
     DatePickerDialog.OnDateSetListener transactionDate = new DatePickerDialog.OnDateSetListener() {
