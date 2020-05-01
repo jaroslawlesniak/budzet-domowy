@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import edu.psm.budzetdomowy.utils.Category;
@@ -37,6 +38,16 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
 
         findViewById(R.id.addIncome).setOnClickListener(this);
         findViewById(R.id.addExpense).setOnClickListener(this);
+
+        //Button otwierający listę transakcji
+        Button buttonOpenBottomSheet = findViewById(R.id.button2);
+        buttonOpenBottomSheet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                transactionList e = new transactionList();
+                e.show(getSupportFragmentManager(), "shdhdhs");
+            }
+        });
     }
 
     protected void openTransactionActivity(String category, int type) {
@@ -95,4 +106,6 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
                 break;
         }
     }
+
+
 }
