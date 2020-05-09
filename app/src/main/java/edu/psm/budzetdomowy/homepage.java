@@ -1,27 +1,31 @@
 package edu.psm.budzetdomowy;
 
-import androidx.appcompat.app.ActionBar;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.Toast;
+
+import com.google.android.material.navigation.NavigationView;
 
 import edu.psm.budzetdomowy.utils.Category;
+import edu.psm.budzetdomowy.utils.SummaryInterval;
 import edu.psm.budzetdomowy.utils.Transaction;
 
 public class homepage extends AppCompatActivity implements View.OnClickListener {
+
+    int selectedSummaryInterval = SummaryInterval.MONTH;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
-
-        getSupportActionBar().hide();
 
         findViewById(R.id.btn1).setOnClickListener(this);
         findViewById(R.id.btn2).setOnClickListener(this);
@@ -46,6 +50,46 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
             public void onClick(View v) {
                 transactionList e = new transactionList();
                 e.show(getSupportFragmentManager(), "shdhdhs");
+            }
+        });
+
+        //Wybranie przedziału podsumowania z wysuwanego menu
+        final NavigationView navigation = findViewById(R.id.nav_view);
+        final DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+
+        navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                int id = menuItem.getItemId();
+
+                // Wybranie dnia
+                if (id==R.id.day) {
+                    selectedSummaryInterval = SummaryInterval.DAY;
+                }
+
+                if (id==R.id.week) {
+                    selectedSummaryInterval = SummaryInterval.WEEK;
+                }
+
+                if (id==R.id.month) {
+                    selectedSummaryInterval = SummaryInterval.MONTH;
+                }
+
+                if (id==R.id.year) {
+                    selectedSummaryInterval = SummaryInterval.YEAR;
+                }
+
+                if (id==R.id.year) {
+                    selectedSummaryInterval = SummaryInterval.ALL;
+                }
+
+                if (id==R.id.custom) {
+                    selectedSummaryInterval = SummaryInterval.CUSTOM_DAY;
+                }
+
+                drawerLayout.closeDrawer(GravityCompat.START);
+
+                return true;
             }
         });
     }
@@ -106,6 +150,4 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
                 break;
         }
     }
-
-
 }

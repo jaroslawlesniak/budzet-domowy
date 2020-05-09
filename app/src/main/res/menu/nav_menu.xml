@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/day"
+        android:title="Dzień">
+    </item>
+    <item
+        android:id="@+id/week"
+        android:title="Tydzień">
+    </item>
+    <item
+        android:id="@+id/month"
+        android:title="Miesiąc">
+    </item>
+    <item
+        android:id="@+id/year"
+        android:title="Rok">
+    </item>
+    <item
+        android:id="@+id/all"
+        android:title="Wszystkie">
+    </item>
+    <item
+        android:id="@+id/custom"
+        android:title="Wybierz datę">
+    </item>
+</menu>
