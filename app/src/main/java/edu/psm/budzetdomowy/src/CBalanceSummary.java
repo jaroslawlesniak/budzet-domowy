@@ -7,7 +7,7 @@ import edu.psm.budzetdomowy.utils.Transaction;
 
 public class CBalanceSummary {
     public float totalValue = 0.0f;
-    public List<Transaction> transactions = new LinkedList();
+    public List<CTransaction> transactions = new LinkedList();
     public int type;
     public String category;
 
