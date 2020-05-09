@@ -3,6 +3,25 @@
     <item
         android:id="@+id/day"
         android:title="Dzień">
-
+    </item>
+    <item
+        android:id="@+id/week"
+        android:title="Tydzień">
+    </item>
+    <item
+        android:id="@+id/month"
+        android:title="Miesiąc">
+    </item>
+    <item
+        android:id="@+id/year"
+        android:title="Rok">
+    </item>
+    <item
+        android:id="@+id/all"
+        android:title="Wszystkie">
+    </item>
+    <item
+        android:id="@+id/custom"
+        android:title="Wybierz datę">
     </item>
 </menu>
