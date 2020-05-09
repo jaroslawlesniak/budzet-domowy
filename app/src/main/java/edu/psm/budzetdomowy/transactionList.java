@@ -13,10 +13,14 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import edu.psm.budzetdomowy.R;
 
 public class transactionList extends BottomSheetDialogFragment {
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_transaction_list, container, false);
+
+
 
         return v;
     }
