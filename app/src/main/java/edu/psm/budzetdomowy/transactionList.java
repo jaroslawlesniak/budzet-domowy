@@ -7,6 +7,7 @@ import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -88,19 +89,31 @@ public class transactionList extends BottomSheetDialogFragment {
 
             // Nazwa kategorii
             TextView categoryName = new TextView(getContext());
+            categoryName.setTextColor(Color.WHITE);
 
-            if(transaction.category != null) {
+            if(transaction.type == Transaction.EXPENSE) {
                 categoryName.setText(transaction.category);
-                categoryName.setTextColor(getResources().getColor(R.color.expenseColor));
             } else {
                 categoryName.setText("Przychód");
-                categoryName.setTextColor(getResources().getColor(R.color.incomeColor));
             }
+
+            // Suma przychodów/wydatków dla kategorii
+            TextView totalValue = new TextView(getContext());
+            totalValue.setText(String.format("%.2f", transaction.totalValue) + "zł");
+
+            if(transaction.type == Transaction.EXPENSE) {
+                totalValue.setTextColor(getResources().getColor(R.color.expenseColor));
+            } else {
+                totalValue.setTextColor(getResources().getColor(R.color.incomeColor));
+            }
+
+            // Lista transakcji dla danej kategorii
 
 
             row.addView(expandButton);
             row.addView(categoryIcon);
             row.addView(categoryName);
+            row.addView(totalValue);
 
             linearLayout.addView(row);
         }
@@ -111,6 +124,29 @@ public class transactionList extends BottomSheetDialogFragment {
             name = "";
         }
 
-        return context.getResources().getIdentifier(name, "string", context.getPackageName());
+        return context.getResources().getIdentifier(name + ".png", "string", context.getPackageName());
+    }
+
+    class TransactionsAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return 0;
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            return null;
+        }
     }
 }
