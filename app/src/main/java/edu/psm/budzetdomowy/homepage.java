@@ -62,28 +62,27 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 int id = menuItem.getItemId();
 
-                // Wybranie dnia
-                if (id==R.id.day) {
+                if (id == R.id.day) {
                     selectedSummaryInterval = SummaryInterval.DAY;
                 }
 
-                if (id==R.id.week) {
+                if (id == R.id.week) {
                     selectedSummaryInterval = SummaryInterval.WEEK;
                 }
 
-                if (id==R.id.month) {
+                if (id == R.id.month) {
                     selectedSummaryInterval = SummaryInterval.MONTH;
                 }
 
-                if (id==R.id.year) {
+                if (id == R.id.year) {
                     selectedSummaryInterval = SummaryInterval.YEAR;
                 }
 
-                if (id==R.id.year) {
+                if (id == R.id.year) {
                     selectedSummaryInterval = SummaryInterval.ALL;
                 }
 
-                if (id==R.id.custom) {
+                if (id == R.id.custom) {
                     selectedSummaryInterval = SummaryInterval.CUSTOM_DAY;
                 }
 
