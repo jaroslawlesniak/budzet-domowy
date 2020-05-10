@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -81,17 +82,50 @@ public class transactionList extends BottomSheetDialogFragment {
             TextView totalValue = categoryView.findViewById(R.id.totalValue);
             ImageView categoryIcon = categoryView.findViewById(R.id.category_icon);
             ConstraintLayout categoryLayout = categoryView.findViewById(R.id.layout);
+            final ImageButton toggle = categoryView.findViewById(R.id.toggle);
 
             if(category.type == Transaction.EXPENSE) {
                 title.setText(category.category);
                 totalValue.setTextColor(getResources().getColor(R.color.expenseColor));
 
                 switch (category.category) {
+                    case Category.HOME:
+                        categoryIcon.setBackgroundResource(R.drawable.dom);
+                        break;
+                    case Category.COSMETICS:
+                        categoryIcon.setBackgroundResource(R.drawable.kosmetyki);
+                        break;
+                    case Category.MEDIA:
+                        categoryIcon.setBackgroundResource(R.drawable.media);
+                        break;
+                    case Category.FOOD:
+                        categoryIcon.setBackgroundResource(R.drawable.restauracja);
+                        break;
+                    case Category.ENTERTAINMENT:
+                        categoryIcon.setBackgroundResource(R.drawable.rozrywka);
+                        break;
+                    case Category.SPORT:
+                        categoryIcon.setBackgroundResource(R.drawable.sport);
+                        break;
+                    case Category.TAXI:
+                        categoryIcon.setBackgroundResource(R.drawable.taxi);
+                        break;
+                    case Category.TRANSPORT:
+                        categoryIcon.setBackgroundResource(R.drawable.transport);
+                        break;
                     case Category.CLOTHES:
                         categoryIcon.setBackgroundResource(R.drawable.ubrania);
                         break;
+                    case Category.HEALTH:
+                        categoryIcon.setBackgroundResource(R.drawable.zdrowie);
+                        break;
+                    case Category.ANIMALS:
+                        categoryIcon.setBackgroundResource(R.drawable.zwierzeta);
+                        break;
+                    case Category.SHOPPING:
+                        categoryIcon.setBackgroundResource(R.drawable.zywnosc);
+                        break;
                 }
-//                categoryIcon.setBackground(getResources().getDrawable(getStringIdentifier(getContext(), category.category)));
             } else {
                 title.setText("Przychód");
             }
@@ -109,8 +143,10 @@ public class transactionList extends BottomSheetDialogFragment {
                 public void onClick(View view) {
                     if(transactionsLayout.getVisibility() == LinearLayout.GONE) {
                         transactionsLayout.setVisibility(View.VISIBLE);
+                        toggle.setBackgroundResource(R.drawable.arrow_up);
                     } else {
                         transactionsLayout.setVisibility(View.GONE);
+                        toggle.setBackgroundResource(R.drawable.arrow_down);
                     }
                 }
             });
@@ -149,9 +185,5 @@ public class transactionList extends BottomSheetDialogFragment {
 
             linearLayout.addView(transactionsLayout);
         }
-    }
-
-    public int getStringIdentifier(Context context, String name) {
-        return context.getResources().getIdentifier(name.toLowerCase() + ".png", "string", context.getPackageName());
     }
 }

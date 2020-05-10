@@ -33,16 +33,16 @@
 
     <ImageView
         android:id="@+id/category_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginStart="5dp"
+        android:background="@drawable/income"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageButton2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/rozrywka" />
+        app:layout_constraintStart_toEndOf="@+id/toggle"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/toggle"
         android:layout_width="20dp"
         android:layout_height="11dp"
         android:background="@drawable/arrow_down"
