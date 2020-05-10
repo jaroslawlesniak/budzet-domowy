@@ -3,15 +3,12 @@ package edu.psm.budzetdomowy;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,7 +24,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
-import edu.psm.budzetdomowy.R;
 import edu.psm.budzetdomowy.src.CBalanceSummary;
 import edu.psm.budzetdomowy.src.CTransaction;
 import edu.psm.budzetdomowy.utils.Category;
@@ -80,52 +76,32 @@ public class transactionList extends BottomSheetDialogFragment {
         //Wyświetlanie wszystkich kategorii
         for(CBalanceSummary category : history) {
             // Stworzenie pojedynczej kategorii
-            LinearLayout row = new LinearLayout(getContext());
-            row.setOrientation(LinearLayout.HORIZONTAL);
+            View categoryView = getLayoutInflater().inflate(R.layout.category_layout, null);
 
-            // Dodanie przycisku (strzałka w dół albo w górę), wyświetla wszystkie transakcje dla wybrajen kategorii
-            ImageButton expandButton = new ImageButton(getContext());
-            expandButton.setBackgroundResource(R.drawable.taxi);
-            expandButton.setLayoutParams(new LinearLayout.LayoutParams(100, 100));
-
-            //Ikona kategorii
-            ImageView categoryIcon = new ImageButton(getContext());
-            categoryIcon.setLayoutParams(new LinearLayout.LayoutParams(100, 100));
-            categoryIcon.setBackgroundResource(getStringIdentifier(getContext(), category.category));
-
-            // Nazwa kategorii
-            TextView categoryName = new TextView(getContext());
-            categoryName.setTextColor(Color.WHITE);
+            TextView title = categoryView.findViewById(R.id.title);
+            TextView totalValue = categoryView.findViewById(R.id.totalValue);
+            ImageView categoryIcon = categoryView.findViewById(R.id.category_icon);
+            ConstraintLayout categoryLayout = categoryView.findViewById(R.id.layout);
 
             if(category.type == Transaction.EXPENSE) {
-                categoryName.setText(category.category);
-            } else {
-                categoryName.setText("Przychód");
-            }
-
-            // Suma przychodów/wydatków dla kategorii
-            TextView totalValue = new TextView(getContext());
-            totalValue.setText(String.format("%.2f", category.totalValue) + "zł");
-
-            if(category.type == Transaction.EXPENSE) {
+                title.setText(category.category);
                 totalValue.setTextColor(getResources().getColor(R.color.expenseColor));
             } else {
-                totalValue.setTextColor(getResources().getColor(R.color.incomeColor));
+                title.setText("Przychód");
             }
+            totalValue.setText(String.format("%.2f", category.totalValue) + "zł");
 
-            // Dodanie informacji o kategorii do modala
-            row.addView(expandButton);
-            row.addView(categoryIcon);
-            row.addView(categoryName);
-            row.addView(totalValue);
 
-            linearLayout.addView(row);
+            linearLayout.addView(categoryLayout);
+
+            LinearLayout transactionsLayout = new LinearLayout(getContext());
+            transactionsLayout.setOrientation(LinearLayout.VERTICAL);
 
             // Dodanie wszystkich transakcji dla danej kategorii
             for(CTransaction transaction : category.transactions) {
                 View view = getLayoutInflater().inflate(R.layout.transactions_layout, null);
 
-                TextView price = view.findViewById(R.id.price);
+                TextView price = view.findViewById(R.id.totalValue);
                 TextView date = view.findViewById(R.id.date);
                 TextView note = view.findViewById(R.id.note);
                 TextView icon = view.findViewById(R.id.icon);
@@ -148,9 +124,10 @@ public class transactionList extends BottomSheetDialogFragment {
 
                 price.setText(String.format("%.2f", transaction.value) + "zł");
 
-
-                linearLayout.addView(transactionLayout);
+                transactionsLayout.addView(transactionLayout);
             }
+
+            linearLayout.addView(transactionsLayout);
         }
     }
 

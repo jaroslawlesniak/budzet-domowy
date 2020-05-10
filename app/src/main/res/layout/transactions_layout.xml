@@ -17,13 +17,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/price"
+        android:id="@+id/totalValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:text="0,00zł"
         android:textColor="@android:color/background_light"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/icon"
         app:layout_constraintStart_toEndOf="@+id/icon"
         app:layout_constraintTop_toTopOf="@+id/icon" />
@@ -34,9 +33,9 @@
         android:layout_height="wrap_content"
         android:text="10 maj"
         android:textColor="@android:color/background_light"
-        app:layout_constraintBottom_toBottomOf="@+id/price"
+        app:layout_constraintBottom_toBottomOf="@+id/totalValue"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/price" />
+        app:layout_constraintTop_toTopOf="@+id/totalValue" />
 
     <TextView
         android:id="@+id/note"
@@ -47,6 +46,6 @@
         android:textColor="?attr/colorButtonNormal"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/price"
-        app:layout_constraintTop_toBottomOf="@+id/price" />
+        app:layout_constraintStart_toStartOf="@+id/totalValue"
+        app:layout_constraintTop_toBottomOf="@+id/totalValue" />
 </androidx.constraintlayout.widget.ConstraintLayout>
