@@ -1,12 +1,11 @@
 package edu.psm.budzetdomowy;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -86,6 +85,13 @@ public class transactionList extends BottomSheetDialogFragment {
             if(category.type == Transaction.EXPENSE) {
                 title.setText(category.category);
                 totalValue.setTextColor(getResources().getColor(R.color.expenseColor));
+
+                switch (category.category) {
+                    case Category.CLOTHES:
+                        categoryIcon.setBackgroundResource(R.drawable.ubrania);
+                        break;
+                }
+//                categoryIcon.setBackground(getResources().getDrawable(getStringIdentifier(getContext(), category.category)));
             } else {
                 title.setText("Przychód");
             }
@@ -94,8 +100,20 @@ public class transactionList extends BottomSheetDialogFragment {
 
             linearLayout.addView(categoryLayout);
 
-            LinearLayout transactionsLayout = new LinearLayout(getContext());
+            final LinearLayout transactionsLayout = new LinearLayout(getContext());
             transactionsLayout.setOrientation(LinearLayout.VERTICAL);
+
+            // Pokazywanie i ukrywanie transakcji dla kategorii
+            categoryView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(transactionsLayout.getVisibility() == LinearLayout.GONE) {
+                        transactionsLayout.setVisibility(View.VISIBLE);
+                    } else {
+                        transactionsLayout.setVisibility(View.GONE);
+                    }
+                }
+            });
 
             // Dodanie wszystkich transakcji dla danej kategorii
             for(CTransaction transaction : category.transactions) {
@@ -127,15 +145,13 @@ public class transactionList extends BottomSheetDialogFragment {
                 transactionsLayout.addView(transactionLayout);
             }
 
+            transactionsLayout.setVisibility(View.GONE);
+
             linearLayout.addView(transactionsLayout);
         }
     }
 
     public int getStringIdentifier(Context context, String name) {
-        if(name == null) {
-            name = "";
-        }
-
-        return context.getResources().getIdentifier(name + ".png", "string", context.getPackageName());
+        return context.getResources().getIdentifier(name.toLowerCase() + ".png", "string", context.getPackageName());
     }
 }
