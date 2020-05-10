@@ -2,8 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/backgroundColor"
     android:padding="10sp">
 
     <TextView
@@ -20,6 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:text="0,00zł"
+        android:textColor="@android:color/background_light"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/icon"
         app:layout_constraintStart_toEndOf="@+id/icon"
         app:layout_constraintTop_toTopOf="@+id/icon" />
@@ -29,6 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="10 maj"
+        android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="@+id/price"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/price" />
@@ -39,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:text="Notatka"
+        android:textColor="?attr/colorButtonNormal"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/price"

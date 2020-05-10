@@ -11,16 +11,21 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import edu.psm.budzetdomowy.R;
 import edu.psm.budzetdomowy.src.CBalanceSummary;
@@ -32,6 +37,7 @@ public class transactionList extends BottomSheetDialogFragment {
 
     LinearLayout linearLayout;
     List<CBalanceSummary> history = new LinkedList<>();
+   List<CTransaction> categoryTransactions;
 
     @Nullable
     @Override
@@ -72,7 +78,7 @@ public class transactionList extends BottomSheetDialogFragment {
 
     public void setContentViews() {
         //Wyświetlanie wszystkich kategorii
-        for(CBalanceSummary transaction : history) {
+        for(CBalanceSummary category : history) {
             // Stworzenie pojedynczej kategorii
             LinearLayout row = new LinearLayout(getContext());
             row.setOrientation(LinearLayout.HORIZONTAL);
@@ -85,37 +91,66 @@ public class transactionList extends BottomSheetDialogFragment {
             //Ikona kategorii
             ImageView categoryIcon = new ImageButton(getContext());
             categoryIcon.setLayoutParams(new LinearLayout.LayoutParams(100, 100));
-            categoryIcon.setBackgroundResource(getStringIdentifier(getContext(), transaction.category));
+            categoryIcon.setBackgroundResource(getStringIdentifier(getContext(), category.category));
 
             // Nazwa kategorii
             TextView categoryName = new TextView(getContext());
             categoryName.setTextColor(Color.WHITE);
 
-            if(transaction.type == Transaction.EXPENSE) {
-                categoryName.setText(transaction.category);
+            if(category.type == Transaction.EXPENSE) {
+                categoryName.setText(category.category);
             } else {
                 categoryName.setText("Przychód");
             }
 
             // Suma przychodów/wydatków dla kategorii
             TextView totalValue = new TextView(getContext());
-            totalValue.setText(String.format("%.2f", transaction.totalValue) + "zł");
+            totalValue.setText(String.format("%.2f", category.totalValue) + "zł");
 
-            if(transaction.type == Transaction.EXPENSE) {
+            if(category.type == Transaction.EXPENSE) {
                 totalValue.setTextColor(getResources().getColor(R.color.expenseColor));
             } else {
                 totalValue.setTextColor(getResources().getColor(R.color.incomeColor));
             }
 
-            // Lista transakcji dla danej kategorii
-
-
+            // Dodanie informacji o kategorii do modala
             row.addView(expandButton);
             row.addView(categoryIcon);
             row.addView(categoryName);
             row.addView(totalValue);
 
             linearLayout.addView(row);
+
+            // Dodanie wszystkich transakcji dla danej kategorii
+            for(CTransaction transaction : category.transactions) {
+                View view = getLayoutInflater().inflate(R.layout.transactions_layout, null);
+
+                TextView price = view.findViewById(R.id.price);
+                TextView date = view.findViewById(R.id.date);
+                TextView note = view.findViewById(R.id.note);
+                TextView icon = view.findViewById(R.id.icon);
+                ConstraintLayout transactionLayout = view.findViewById(R.id.layout);
+
+                DateFormat dateFormat = new SimpleDateFormat("d MMMM", new Locale("pl", "PL"));
+                date.setText(dateFormat.format(transaction.date.getTime()));
+
+                if(transaction.type == Transaction.EXPENSE) {
+                    icon.setBackground(getResources().getDrawable(R.drawable.rounded_type_expense));
+                } else {
+                    icon.setBackground(getResources().getDrawable(R.drawable.rounded_type_income));
+                }
+
+                if(transaction.note == "") {
+                    note.setVisibility(View.GONE);
+                } else {
+                    note.setText(transaction.note);
+                }
+
+                price.setText(String.format("%.2f", transaction.value) + "zł");
+
+
+                linearLayout.addView(transactionLayout);
+            }
         }
     }
 
@@ -125,28 +160,5 @@ public class transactionList extends BottomSheetDialogFragment {
         }
 
         return context.getResources().getIdentifier(name + ".png", "string", context.getPackageName());
-    }
-
-    class TransactionsAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return 0;
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            return null;
-        }
     }
 }
