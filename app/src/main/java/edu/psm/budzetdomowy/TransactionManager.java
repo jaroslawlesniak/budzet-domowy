@@ -251,7 +251,7 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.calcEqual: //wysypuje przy działaniu na otrzymanym już wyniku
                 result = calculate(String.valueOf(sb), indexOfSign);
-                sb.replace(0, sb.length()-1, result);
+                sb.replace(0, sb.length(), result);
                 tvKwota.setText(sb);
                 isSign = false;
                 break;
@@ -315,6 +315,7 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
     }
     //rozdzielenie stringa na składowe i obliczenie wyniku
     String calculate(String gluedString, int indexOfSign) {
+        if(indexOfSign == 0) return gluedString; //Jeśli nie wpisano znaku, to nie wykonuje obliczeń
 
         String firstNumber = gluedString.substring(0,indexOfSign);
         String secondNumber = gluedString.substring(indexOfSign+1);
@@ -325,7 +326,6 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
         Double doubleValue;
         String textValue;
 
-        DecimalFormat myFormatter = new DecimalFormat("0.00"); //zaokrąglenia
         if (sign == '+'){
             doubleValue = a+b;
         }
@@ -338,9 +338,9 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
         else {
             doubleValue = a/b;
         }
-        textValue = myFormatter.format(doubleValue);
-        System.out.println(doubleValue);
-        System.out.println(textValue); //tutaj jest dobre zaokrąglenie a potem nagle jakieś dodatkowe liczby na 3 miejscu po przecinku
+
+        textValue = String.format(Locale.US,"%.2f", doubleValue); //Zaokrąglenia
+         //tutaj jest dobre zaokrąglenie a potem nagle jakieś dodatkowe liczby na 3 miejscu po przecinku
         //ale chciałabym też żeby konwersja nie zamieniała kropki na przecinek bo potem się wysypują kolejne obliczenia
         return textValue;
     }
