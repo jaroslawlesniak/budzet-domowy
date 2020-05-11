@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btnDot"
+        android:id="@+id/calcDivision"
         android:layout_width="0dp"
         android:layout_height="65dp"
         android:layout_marginStart="5dp"
@@ -28,12 +28,12 @@
         android:text="\/"
         android:textColor="@android:color/background_light"
         android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="@+id/btnDot2"
+        app:layout_constraintBottom_toBottomOf="@+id/calcEqual"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnDot2" />
+        app:layout_constraintStart_toEndOf="@+id/calcEqual" />
 
     <Button
-        android:id="@+id/btnDot14"
+        android:id="@+id/calcMultiply"
         android:layout_width="0dp"
         android:layout_height="65dp"
         android:layout_marginBottom="10dp"
@@ -41,13 +41,13 @@
         android:text="\*"
         android:textColor="@android:color/background_light"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnDot"
-        app:layout_constraintEnd_toEndOf="@+id/btnDot"
+        app:layout_constraintBottom_toTopOf="@+id/calcDivision"
+        app:layout_constraintEnd_toEndOf="@+id/calcDivision"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/btnDot" />
+        app:layout_constraintStart_toStartOf="@+id/calcDivision" />
 
     <Button
-        android:id="@+id/btnDot15"
+        android:id="@+id/calcMinus"
         android:layout_width="0dp"
         android:layout_height="65dp"
         android:layout_marginBottom="10dp"
@@ -55,13 +55,13 @@
         android:text="\-"
         android:textColor="@android:color/background_light"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnDot14"
-        app:layout_constraintEnd_toEndOf="@+id/btnDot"
+        app:layout_constraintBottom_toTopOf="@+id/calcMultiply"
+        app:layout_constraintEnd_toEndOf="@+id/calcDivision"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/btnDot" />
+        app:layout_constraintStart_toStartOf="@+id/calcDivision" />
 
     <Button
-        android:id="@+id/btnDot16"
+        android:id="@+id/calcPlus"
         android:layout_width="0dp"
         android:layout_height="65dp"
         android:layout_marginBottom="10dp"
@@ -69,13 +69,13 @@
         android:text="\+"
         android:textColor="@android:color/background_light"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnDot15"
-        app:layout_constraintEnd_toEndOf="@+id/btnDot"
+        app:layout_constraintBottom_toTopOf="@+id/calcMinus"
+        app:layout_constraintEnd_toEndOf="@+id/calcDivision"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/btnDot" />
+        app:layout_constraintStart_toStartOf="@+id/calcDivision" />
 
     <Button
-        android:id="@+id/btnDot2"
+        android:id="@+id/calcEqual"
         android:layout_width="0dp"
         android:layout_height="65dp"
         android:layout_marginStart="5dp"
@@ -86,11 +86,11 @@
         android:textColor="@android:color/background_light"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/submitButton"
-        app:layout_constraintEnd_toStartOf="@+id/btnDot"
-        app:layout_constraintStart_toEndOf="@+id/btnDot3" />
+        app:layout_constraintEnd_toStartOf="@+id/calcDivision"
+        app:layout_constraintStart_toEndOf="@+id/calc0" />
 
     <Button
-        android:id="@+id/btnDot7"
+        android:id="@+id/calc9"
         android:layout_width="0dp"
         android:layout_height="65dp"
         android:layout_marginBottom="10dp"
@@ -98,13 +98,13 @@
         android:text="9"
         android:textColor="@android:color/background_light"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnDot2"
-        app:layout_constraintEnd_toEndOf="@+id/btnDot2"
+        app:layout_constraintBottom_toTopOf="@+id/calcEqual"
+        app:layout_constraintEnd_toEndOf="@+id/calcEqual"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/btnDot2" />
+        app:layout_constraintStart_toStartOf="@+id/calcEqual" />
 
     <Button
-        android:id="@+id/btnDot10"
+        android:id="@+id/calc6"
         android:layout_width="0dp"
         android:layout_height="65dp"
         android:layout_marginBottom="10dp"
@@ -112,13 +112,13 @@
         android:text="6"
         android:textColor="@android:color/background_light"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnDot7"
-        app:layout_constraintEnd_toEndOf="@+id/btnDot2"
+        app:layout_constraintBottom_toTopOf="@+id/calc9"
+        app:layout_constraintEnd_toEndOf="@+id/calcEqual"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/btnDot2" />
+        app:layout_constraintStart_toStartOf="@+id/calcEqual" />
 
     <Button
-        android:id="@+id/btnDot13"
+        android:id="@+id/calc3"
         android:layout_width="0dp"
         android:layout_height="65dp"
         android:layout_marginBottom="10dp"
@@ -126,13 +126,13 @@
         android:text="3"
         android:textColor="@android:color/background_light"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnDot10"
-        app:layout_constraintEnd_toEndOf="@+id/btnDot2"
+        app:layout_constraintBottom_toTopOf="@+id/calc6"
+        app:layout_constraintEnd_toEndOf="@+id/calcEqual"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/btnDot2" />
+        app:layout_constraintStart_toStartOf="@+id/calcEqual" />
 
     <Button
-        android:id="@+id/btnDot3"
+        android:id="@+id/calc0"
         android:layout_width="0dp"
         android:layout_height="65dp"
         android:layout_marginStart="5dp"
@@ -141,12 +141,12 @@
         android:text="0"
         android:textColor="@android:color/background_light"
         android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="@+id/btnDot2"
-        app:layout_constraintEnd_toStartOf="@+id/btnDot2"
-        app:layout_constraintStart_toEndOf="@+id/btnDot4" />
+        app:layout_constraintBottom_toBottomOf="@+id/calcEqual"
+        app:layout_constraintEnd_toStartOf="@+id/calcEqual"
+        app:layout_constraintStart_toEndOf="@+id/calcDot" />
 
     <Button
-        android:id="@+id/btnDot6"
+        android:id="@+id/calc8"
         android:layout_width="0dp"
         android:layout_height="65dp"
         android:layout_marginBottom="10dp"
@@ -154,13 +154,13 @@
         android:text="8"
         android:textColor="@android:color/background_light"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnDot3"
-        app:layout_constraintEnd_toEndOf="@+id/btnDot3"
+        app:layout_constraintBottom_toTopOf="@+id/calc0"
+        app:layout_constraintEnd_toEndOf="@+id/calc0"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/btnDot3" />
+        app:layout_constraintStart_toStartOf="@+id/calc0" />
 
     <Button
-        android:id="@+id/btnDot9"
+        android:id="@+id/calc5"
         android:layout_width="0dp"
         android:layout_height="65dp"
         android:layout_marginBottom="10dp"
@@ -168,13 +168,13 @@
         android:text="5"
         android:textColor="@android:color/background_light"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnDot6"
-        app:layout_constraintEnd_toEndOf="@+id/btnDot3"
+        app:layout_constraintBottom_toTopOf="@+id/calc8"
+        app:layout_constraintEnd_toEndOf="@+id/calc0"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/btnDot3" />
+        app:layout_constraintStart_toStartOf="@+id/calc0" />
 
     <Button
-        android:id="@+id/btnDot12"
+        android:id="@+id/calc2"
         android:layout_width="0dp"
         android:layout_height="65dp"
         android:layout_marginBottom="10dp"
@@ -182,13 +182,13 @@
         android:text="2"
         android:textColor="@android:color/background_light"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnDot9"
-        app:layout_constraintEnd_toEndOf="@+id/btnDot3"
+        app:layout_constraintBottom_toTopOf="@+id/calc5"
+        app:layout_constraintEnd_toEndOf="@+id/calc0"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/btnDot3" />
+        app:layout_constraintStart_toStartOf="@+id/calc0" />
 
     <Button
-        android:id="@+id/btnDot4"
+        android:id="@+id/calcDot"
         android:layout_width="0dp"
         android:layout_height="65dp"
         android:layout_marginStart="10dp"
@@ -197,12 +197,12 @@
         android:text="."
         android:textColor="@android:color/background_light"
         android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="@+id/btnDot3"
-        app:layout_constraintEnd_toStartOf="@+id/btnDot3"
+        app:layout_constraintBottom_toBottomOf="@+id/calc0"
+        app:layout_constraintEnd_toStartOf="@+id/calc0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/btnDot5"
+        android:id="@+id/calc7"
         android:layout_width="0dp"
         android:layout_height="65dp"
         android:layout_marginBottom="10dp"
@@ -210,13 +210,13 @@
         android:text="7"
         android:textColor="@android:color/background_light"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnDot4"
-        app:layout_constraintEnd_toEndOf="@+id/btnDot4"
+        app:layout_constraintBottom_toTopOf="@+id/calcDot"
+        app:layout_constraintEnd_toEndOf="@+id/calcDot"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/btnDot4" />
+        app:layout_constraintStart_toStartOf="@+id/calcDot" />
 
     <Button
-        android:id="@+id/btnDot8"
+        android:id="@+id/calc4"
         android:layout_width="0dp"
         android:layout_height="65dp"
         android:layout_marginBottom="10dp"
@@ -224,13 +224,13 @@
         android:text="4"
         android:textColor="@android:color/background_light"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnDot5"
-        app:layout_constraintEnd_toEndOf="@+id/btnDot4"
+        app:layout_constraintBottom_toTopOf="@+id/calc7"
+        app:layout_constraintEnd_toEndOf="@+id/calcDot"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/btnDot4" />
+        app:layout_constraintStart_toStartOf="@+id/calcDot" />
 
     <Button
-        android:id="@+id/btnDot11"
+        android:id="@+id/calc1"
         android:layout_width="0dp"
         android:layout_height="65dp"
         android:layout_marginBottom="10dp"
@@ -238,10 +238,10 @@
         android:text="1"
         android:textColor="@android:color/background_light"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnDot8"
-        app:layout_constraintEnd_toEndOf="@+id/btnDot4"
+        app:layout_constraintBottom_toTopOf="@+id/calc4"
+        app:layout_constraintEnd_toEndOf="@+id/calcDot"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/btnDot4" />
+        app:layout_constraintStart_toStartOf="@+id/calcDot" />
 
     <EditText
         android:id="@+id/editText3"
@@ -256,20 +256,20 @@
         android:textColorHighlight="@color/primaryColor"
         android:textColorHint="@android:color/background_light"
         android:textColorLink="@color/primaryColor"
-        app:layout_constraintBottom_toTopOf="@+id/btnDot12"
+        app:layout_constraintBottom_toTopOf="@+id/calc2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+        app:layout_constraintTop_toBottomOf="@+id/tvKwota" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/tvKwota"
         android:layout_width="0dp"
         android:layout_height="60sp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:background="@color/primaryColor"
         android:gravity="center"
-        android:text="115,50 PLN"
+        android:text="Wpisz kwotę"
         android:textAlignment="center"
         android:textColor="@android:color/background_light"
         android:textSize="25sp"
@@ -281,16 +281,14 @@
     <Button
         android:id="@+id/submitButton"
         android:layout_width="0dp"
-        android:layout_height="65sp"
+        android:layout_height="65dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
         android:background="@drawable/square_income"
         android:text="Wybierz kategorię"
         android:textColor="@android:color/background_light"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/categoriesList"
+        app:layout_constraintEnd_toStartOf="@+id/calcClear"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Spinner
@@ -304,5 +302,32 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/calcDelete"
+        android:layout_width="90dp"
+        android:layout_height="65dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/square_income"
+        android:src="@drawable/ic_backspace_black_24dp"
+        android:textColor="@android:color/background_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/calcClear"
+        android:layout_width="90dp"
+        android:layout_height="65dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/square_income"
+        android:text="C"
+        android:textStyle="bold"
+        android:textColor="@android:color/background_light"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/calcDelete" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

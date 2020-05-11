@@ -23,6 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.text.*;
 
 import edu.psm.budzetdomowy.utils.Category;
 import edu.psm.budzetdomowy.utils.Transaction;
@@ -76,6 +77,26 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
 
         setDate();
         prepareSpinner();
+
+        //kalkulator
+        findViewById(R.id.calc1).setOnClickListener(this);
+        findViewById(R.id.calc2).setOnClickListener(this);
+        findViewById(R.id.calc3).setOnClickListener(this);
+        findViewById(R.id.calc4).setOnClickListener(this);
+        findViewById(R.id.calc5).setOnClickListener(this);
+        findViewById(R.id.calc6).setOnClickListener(this);
+        findViewById(R.id.calc7).setOnClickListener(this);
+        findViewById(R.id.calc8).setOnClickListener(this);
+        findViewById(R.id.calc9).setOnClickListener(this);
+        findViewById(R.id.calc0).setOnClickListener(this);
+        findViewById(R.id.calcPlus).setOnClickListener(this);
+        findViewById(R.id.calcMinus).setOnClickListener(this);
+        findViewById(R.id.calcMultiply).setOnClickListener(this);
+        findViewById(R.id.calcDivision).setOnClickListener(this);
+        findViewById(R.id.calcDot).setOnClickListener(this);
+        findViewById(R.id.calcEqual).setOnClickListener(this);
+        findViewById(R.id.calcDelete).setOnClickListener(this);
+        findViewById(R.id.calcClear).setOnClickListener(this);
     }
 
     @Override
@@ -87,9 +108,16 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
         }
         return super.onOptionsItemSelected(item);
     }
+    StringBuilder sb = new StringBuilder();
+    int indexOfSign=0;
+    boolean isSign = false; //sprawdzenie czy był już znak
+    int isDot = 0; //sprawdzenie czy była już kropka użyta : 0 nie, 1 tak, 2/3 jedno/dwa miejsca po przecinku wpisane
+    String result = null;
 
     @Override
     public void onClick(View view) {
+        final TextView tvKwota = findViewById(R.id.tvKwota);
+
         switch (view.getId()) {
             case R.id.dateTextView:
                 new DatePickerDialog(
@@ -104,6 +132,140 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
                 if(selectedCategory == null) {
                     categoriesList.performClick();
                 }
+                break;
+
+            case R.id.calc1:
+                if(result!=null) prepareToNextCalculation();
+                if(isDot<3){
+                sb.append("1");
+                tvKwota.setText(sb);
+                if(isDot>0) isDot++;}
+                break;
+            case R.id.calc2:
+                if(result!=null) prepareToNextCalculation();
+                if(isDot<3){
+                sb.append("2");
+                tvKwota.setText(sb);
+                if(isDot>0) isDot++;}
+                break;
+            case R.id.calc3:
+                if(result!=null) prepareToNextCalculation();
+                if(isDot<3){
+                sb.append("3");
+                tvKwota.setText(sb);
+                if(isDot>0) isDot++;}
+                break;
+            case R.id.calc4:
+                if(result!=null) prepareToNextCalculation();
+                if(isDot<3){
+                sb.append("4");
+                tvKwota.setText(sb);
+                if(isDot>0) isDot++;}
+                break;
+            case R.id.calc5:
+                if(result!=null) prepareToNextCalculation();
+                if(isDot<3){
+                sb.append("5");
+                tvKwota.setText(sb);
+                if(isDot>0) isDot++;}
+                break;
+            case R.id.calc6:
+                if(result!=null) prepareToNextCalculation();
+                if(isDot<3){
+                sb.append("6");
+                tvKwota.setText(sb);
+                if(isDot>0) isDot++;}
+                break;
+            case R.id.calc7:
+                if(result!=null) prepareToNextCalculation();
+                if(isDot<3){
+                sb.append("7");
+                tvKwota.setText(sb);
+                if(isDot>0) isDot++;}
+                break;
+            case R.id.calc8:
+                if(result!=null) prepareToNextCalculation();
+                if(isDot<3){
+                sb.append("8");
+                tvKwota.setText(sb);
+                if(isDot>0) isDot++;}
+                break;
+            case R.id.calc9:
+                if(result!=null) prepareToNextCalculation();
+                if(isDot<3){
+                sb.append("9");
+                tvKwota.setText(sb);
+                if(isDot>0) isDot++;}
+                break;
+            case R.id.calc0:
+                if(result!=null) prepareToNextCalculation();
+                if(isDot<3){
+                sb.append("0");
+                tvKwota.setText(sb);
+                if(isDot>0) isDot++;}
+                break;
+            case R.id.calcDot:
+                if(result!=null) prepareToNextCalculation();
+                if(sb.length()==0 || sb.length()-1==indexOfSign) sb.append("0");
+                if (isDot==0){
+                isDot = 1;
+                sb.append(".");
+                tvKwota.setText(sb);}
+                break;
+            case R.id.calcPlus:
+                if (!isSign){
+                    sb.append("+");
+                    tvKwota.setText(sb);
+                    isSign = true;
+                    isDot = 0;
+                    indexOfSign=sb.length()-1;
+                    result = null;}
+                break;
+            case R.id.calcMinus:
+                if (isSign){}
+                else {
+                    sb.append("-");
+                    tvKwota.setText(sb);
+                    isSign = true;
+                    isDot = 0;
+                    indexOfSign=sb.length()-1;
+                    result = null;}
+                break;
+            case R.id.calcMultiply:
+                if (!isSign){
+                    sb.append("*");
+                    tvKwota.setText(sb);
+                    isSign = true;
+                    isDot = 0;
+                    indexOfSign=sb.length()-1;
+                    result = null;}
+                break;
+            case R.id.calcDivision:
+                if (!isSign){
+                    sb.append("/");
+                    tvKwota.setText(sb);
+                    isSign = true;
+                    isDot = 0;
+                    indexOfSign=sb.length()-1;
+                    result = null;}
+                break;
+            case R.id.calcEqual: //wysypuje przy działaniu na otrzymanym już wyniku
+                result = calculate(String.valueOf(sb), indexOfSign);
+                sb.replace(0, sb.length()-1, result);
+                tvKwota.setText(sb);
+                isSign = false;
+                break;
+            case R.id.calcDelete:
+                if(sb.length()==indexOfSign) isSign = false;
+                if(isDot>0) isDot--;
+                sb.deleteCharAt(sb.length()-1);
+                tvKwota.setText(sb);
+                break;
+            case R.id.calcClear: //działa
+                sb.delete(0, sb.length());
+                tvKwota.setText(sb);
+                isSign = false;
+                isDot = 0;
                 break;
         }
     }
@@ -151,4 +313,40 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
             }
         });
     }
+    //rozdzielenie stringa na składowe i obliczenie wyniku
+    String calculate(String gluedString, int indexOfSign) {
+
+        String firstNumber = gluedString.substring(0,indexOfSign);
+        String secondNumber = gluedString.substring(indexOfSign+1);
+        char sign = gluedString.charAt(indexOfSign);
+
+        double a=Double.parseDouble(firstNumber);
+        double b=Double.parseDouble(secondNumber);
+        Double doubleValue;
+        String textValue;
+
+        DecimalFormat myFormatter = new DecimalFormat("0.00"); //zaokrąglenia
+        if (sign == '+'){
+            doubleValue = a+b;
+        }
+        else if (sign == '-'){
+            doubleValue = a-b;
+        }
+        else if (sign == '*'){
+            doubleValue = a*b;
+        }
+        else {
+            doubleValue = a/b;
+        }
+        textValue = myFormatter.format(doubleValue);
+        System.out.println(doubleValue);
+        System.out.println(textValue); //tutaj jest dobre zaokrąglenie a potem nagle jakieś dodatkowe liczby na 3 miejscu po przecinku
+        //ale chciałabym też żeby konwersja nie zamieniała kropki na przecinek bo potem się wysypują kolejne obliczenia
+        return textValue;
+    }
+    void prepareToNextCalculation(){
+        sb.delete(0, sb.length());
+        isSign = false;
+        isDot = 0;
+        result = null;}
 }
