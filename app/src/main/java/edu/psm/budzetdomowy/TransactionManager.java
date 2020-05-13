@@ -251,7 +251,7 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.calcEqual: //wysypuje przy działaniu na otrzymanym już wyniku
                 result = calculate(String.valueOf(sb), indexOfSign);
-                sb.replace(0, sb.length()-1, result);
+                sb.replace(0, sb.length(), result);
                 tvKwota.setText(sb);
                 isSign = false;
                 break;
