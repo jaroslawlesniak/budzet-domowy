@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -109,9 +110,9 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
         return super.onOptionsItemSelected(item);
     }
     StringBuilder sb = new StringBuilder();
-    int indexOfSign=0;
-    boolean isSign = false; //sprawdzenie czy był już znak
-    int isDot = 0; //sprawdzenie czy była już kropka użyta : 0 nie, 1 tak, 2/3 jedno/dwa miejsca po przecinku wpisane
+    int indexOfSign=-1; //jeśli nie było znaku to jest -1, jeśli był to inna wartość
+    int isDot = 0; //sprawdzenie czy w pierwszej liczbie była już kropka użyta : 0 nie, 1 tak, 2/3 jedno/dwa miejsca po przecinku wpisane
+    int isDot2 = 0; //sprawdzenie czy w drugiej liczbie była już kropka użyta : 0 nie, 1 tak, 2/3 jedno/dwa miejsca po przecinku wpisane
     String result = null;
 
     @Override
@@ -200,74 +201,97 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
             case R.id.calc0:
                 if(result!=null) prepareToNextCalculation();
                 if(isDot<3){
+                    if(isDot>0) isDot++;
                 sb.append("0");
-                tvKwota.setText(sb);
-                if(isDot>0) isDot++;}
+                    if(sb.length()-indexOfSign==2) {
+                        sb.append(".");
+                        isDot = 1;
+                    }
+                tvKwota.setText(sb);}
                 break;
             case R.id.calcDot:
                 if(result!=null) prepareToNextCalculation();
-                if(sb.length()==0 || sb.length()-1==indexOfSign) sb.append("0");
+                if(sb.length()-1==indexOfSign) sb.append("0");
                 if (isDot==0){
                 isDot = 1;
                 sb.append(".");
                 tvKwota.setText(sb);}
                 break;
             case R.id.calcPlus:
-                if (!isSign){
+                if (indexOfSign==-1 && sb.length()!=0){
                     sb.append("+");
                     tvKwota.setText(sb);
-                    isSign = true;
                     isDot = 0;
                     indexOfSign=sb.length()-1;
                     result = null;}
                 break;
             case R.id.calcMinus:
-                if (isSign){}
-                else {
+                if (indexOfSign==-1 && sb.length()!=0){
                     sb.append("-");
                     tvKwota.setText(sb);
-                    isSign = true;
                     isDot = 0;
                     indexOfSign=sb.length()-1;
                     result = null;}
                 break;
             case R.id.calcMultiply:
-                if (!isSign){
+                if (indexOfSign==-1 && sb.length()!=0){
                     sb.append("*");
                     tvKwota.setText(sb);
-                    isSign = true;
                     isDot = 0;
                     indexOfSign=sb.length()-1;
                     result = null;}
                 break;
             case R.id.calcDivision:
-                if (!isSign){
+                if (indexOfSign==-1 && sb.length()!=0){
                     sb.append("/");
                     tvKwota.setText(sb);
-                    isSign = true;
                     isDot = 0;
                     indexOfSign=sb.length()-1;
                     result = null;}
                 break;
-            case R.id.calcEqual: //wysypuje przy działaniu na otrzymanym już wyniku
-                result = calculate(String.valueOf(sb), indexOfSign);
-                sb.replace(0, sb.length(), result);
-                tvKwota.setText(sb);
-                isSign = false;
+            case R.id.calcEqual:
+                if(result==null) {
+                    result = calculate(String.valueOf(sb), indexOfSign);
+                    sb.replace(0, sb.length(), result);
+                    tvKwota.setText(sb);
+                    indexOfSign = -1;
+                }
                 break;
             case R.id.calcDelete:
-                if(sb.length()==indexOfSign) isSign = false;
-                if(isDot>0) isDot--;
-                sb.deleteCharAt(sb.length()-1);
-                tvKwota.setText(sb);
+                deleteOneChar();
+                if(sb.length()>0) tvKwota.setText(sb);
+                else tvKwota.setText("Wpisz kwotę");
                 break;
             case R.id.calcClear: //działa
                 sb.delete(0, sb.length());
-                tvKwota.setText(sb);
-                isSign = false;
+                tvKwota.setText("Wpisz kwotę");
+                indexOfSign = -1;
                 isDot = 0;
                 break;
         }
+    }
+
+    void deleteOneChar(){
+
+        //jeśli usuwa przecinek
+        if(isDot==1){//jeśli przed przecinkiem jest tylko zero (lub po znaku jest tylko zero) to usuń też zero
+            if(sb.charAt(sb.length()-2)=='0') sb.deleteCharAt(sb.length()-1);
+        }
+
+        // jeśli usuwa coś po przecinku
+        if(isDot>0) isDot--;
+
+
+        //jeśli usuwa znak
+        if(sb.length()-1==indexOfSign) { // trzeba dać znać jakoś czy była już kropka i ile miejsc po niej
+            indexOfSign = -1;
+            //albo osobna zmienna na pierwszą i drugą kropkę(i trochę zmian w kodzie), albo sprawdzanie trzech ostatnich charów
+            if (sb.charAt(sb.length() - 2) == '.') isDot=1;
+            else if (sb.charAt(sb.length() - 3) == '.') isDot=2;
+            else if (sb.charAt(sb.length() - 4) == '.') isDot=3;
+        }
+
+        sb.deleteCharAt(sb.length()-1);
     }
 
     void setDate() {
@@ -315,16 +339,22 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
     }
     //rozdzielenie stringa na składowe i obliczenie wyniku
     String calculate(String gluedString, int indexOfSign) {
-        if(indexOfSign == 0) return gluedString; //Jeśli nie wpisano znaku, to nie wykonuje obliczeń
+        if(indexOfSign == -1) return gluedString; //Jeśli nie wpisano znaku, to nie wykonuje obliczeń
 
         String firstNumber = gluedString.substring(0,indexOfSign);
         String secondNumber = gluedString.substring(indexOfSign+1);
+        if(secondNumber.equals("")) return firstNumber;
         char sign = gluedString.charAt(indexOfSign);
 
         double a=Double.parseDouble(firstNumber);
         double b=Double.parseDouble(secondNumber);
         Double doubleValue;
         String textValue;
+
+        if(sign=='/' && b == 0) {
+            Toast.makeText(getApplicationContext(),"Nie dzielimy przez zero!", Toast.LENGTH_SHORT).show();
+            return gluedString;
+        }
 
         if (sign == '+'){
             doubleValue = a+b;
@@ -339,14 +369,12 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
             doubleValue = a/b;
         }
 
-        textValue = String.format(Locale.US,"%.2f", doubleValue); //Zaokrąglenia
-         //tutaj jest dobre zaokrąglenie a potem nagle jakieś dodatkowe liczby na 3 miejscu po przecinku
-        //ale chciałabym też żeby konwersja nie zamieniała kropki na przecinek bo potem się wysypują kolejne obliczenia
+        textValue = String.format(Locale.US,"%.2f", doubleValue);
         return textValue;
     }
     void prepareToNextCalculation(){
         sb.delete(0, sb.length());
-        isSign = false;
         isDot = 0;
+        indexOfSign = -1;
         result = null;}
 }
