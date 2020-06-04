@@ -98,6 +98,7 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
         findViewById(R.id.calcEqual).setOnClickListener(this);
         findViewById(R.id.calcDelete).setOnClickListener(this);
         findViewById(R.id.calcClear).setOnClickListener(this);
+        findViewById(R.id.zatwierdz).setOnClickListener(this);
     }
 
     @Override
@@ -132,6 +133,12 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
             case R.id.submitButton:
                 if(selectedCategory == null) {
                     categoriesList.performClick();
+                }
+                break;
+
+            case R.id.zatwierdz:
+                if(result!=null) {
+                    //instrukcje jak sprawdzić co jest do zapisu i przesłanie danych do bazy plus przejście do homepage
                 }
                 break;
 
