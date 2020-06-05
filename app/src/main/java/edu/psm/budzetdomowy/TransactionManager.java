@@ -265,7 +265,7 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
                 }
                 break;
             case R.id.calcDelete:
-                deleteOneChar();
+                if(sb.length()>0) deleteOneChar();
                 if(sb.length()>0) tvKwota.setText(sb);
                 else tvKwota.setText("Wpisz kwotę");
                 break;
