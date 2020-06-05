@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,6 +24,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.text.*;
 
 import edu.psm.budzetdomowy.utils.Category;
 import edu.psm.budzetdomowy.utils.Transaction;
@@ -76,6 +78,27 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
 
         setDate();
         prepareSpinner();
+
+        //kalkulator
+        findViewById(R.id.calc1).setOnClickListener(this);
+        findViewById(R.id.calc2).setOnClickListener(this);
+        findViewById(R.id.calc3).setOnClickListener(this);
+        findViewById(R.id.calc4).setOnClickListener(this);
+        findViewById(R.id.calc5).setOnClickListener(this);
+        findViewById(R.id.calc6).setOnClickListener(this);
+        findViewById(R.id.calc7).setOnClickListener(this);
+        findViewById(R.id.calc8).setOnClickListener(this);
+        findViewById(R.id.calc9).setOnClickListener(this);
+        findViewById(R.id.calc0).setOnClickListener(this);
+        findViewById(R.id.calcPlus).setOnClickListener(this);
+        findViewById(R.id.calcMinus).setOnClickListener(this);
+        findViewById(R.id.calcMultiply).setOnClickListener(this);
+        findViewById(R.id.calcDivision).setOnClickListener(this);
+        findViewById(R.id.calcDot).setOnClickListener(this);
+        findViewById(R.id.calcEqual).setOnClickListener(this);
+        findViewById(R.id.calcDelete).setOnClickListener(this);
+        findViewById(R.id.calcClear).setOnClickListener(this);
+        findViewById(R.id.zatwierdz).setOnClickListener(this);
     }
 
     @Override
@@ -87,9 +110,16 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
         }
         return super.onOptionsItemSelected(item);
     }
+    StringBuilder sb = new StringBuilder();
+    int indexOfSign=-1; //jeśli nie było znaku to jest -1, jeśli był to inna wartość
+    int isDot = 0; //sprawdzenie czy w pierwszej liczbie była już kropka użyta : 0 nie, 1 tak, 2/3 jedno/dwa miejsca po przecinku wpisane
+    int isDot2 = 0; //sprawdzenie czy w drugiej liczbie była już kropka użyta : 0 nie, 1 tak, 2/3 jedno/dwa miejsca po przecinku wpisane
+    String result = null;
 
     @Override
     public void onClick(View view) {
+        final TextView tvKwota = findViewById(R.id.tvKwota);
+
         switch (view.getId()) {
             case R.id.dateTextView:
                 new DatePickerDialog(
@@ -105,7 +135,170 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
                     categoriesList.performClick();
                 }
                 break;
+
+            case R.id.zatwierdz:
+                if(result!=null) {
+                    //instrukcje jak sprawdzić co jest do zapisu i przesłanie danych do bazy plus przejście do homepage
+                }
+                break;
+
+            case R.id.calc1:
+                if(result!=null) prepareToNextCalculation();
+                if(isDot<3){
+                sb.append("1");
+                tvKwota.setText(sb);
+                if(isDot>0) isDot++;}
+                break;
+            case R.id.calc2:
+                if(result!=null) prepareToNextCalculation();
+                if(isDot<3){
+                sb.append("2");
+                tvKwota.setText(sb);
+                if(isDot>0) isDot++;}
+                break;
+            case R.id.calc3:
+                if(result!=null) prepareToNextCalculation();
+                if(isDot<3){
+                sb.append("3");
+                tvKwota.setText(sb);
+                if(isDot>0) isDot++;}
+                break;
+            case R.id.calc4:
+                if(result!=null) prepareToNextCalculation();
+                if(isDot<3){
+                sb.append("4");
+                tvKwota.setText(sb);
+                if(isDot>0) isDot++;}
+                break;
+            case R.id.calc5:
+                if(result!=null) prepareToNextCalculation();
+                if(isDot<3){
+                sb.append("5");
+                tvKwota.setText(sb);
+                if(isDot>0) isDot++;}
+                break;
+            case R.id.calc6:
+                if(result!=null) prepareToNextCalculation();
+                if(isDot<3){
+                sb.append("6");
+                tvKwota.setText(sb);
+                if(isDot>0) isDot++;}
+                break;
+            case R.id.calc7:
+                if(result!=null) prepareToNextCalculation();
+                if(isDot<3){
+                sb.append("7");
+                tvKwota.setText(sb);
+                if(isDot>0) isDot++;}
+                break;
+            case R.id.calc8:
+                if(result!=null) prepareToNextCalculation();
+                if(isDot<3){
+                sb.append("8");
+                tvKwota.setText(sb);
+                if(isDot>0) isDot++;}
+                break;
+            case R.id.calc9:
+                if(result!=null) prepareToNextCalculation();
+                if(isDot<3){
+                sb.append("9");
+                tvKwota.setText(sb);
+                if(isDot>0) isDot++;}
+                break;
+            case R.id.calc0:
+                if(result!=null) prepareToNextCalculation();
+                if(isDot<3){
+                    if(isDot>0) isDot++;
+                sb.append("0");
+                    if(sb.length()-indexOfSign==2) {
+                        sb.append(".");
+                        isDot = 1;
+                    }
+                tvKwota.setText(sb);}
+                break;
+            case R.id.calcDot:
+                if(result!=null) prepareToNextCalculation();
+                if(sb.length()-1==indexOfSign) sb.append("0");
+                if (isDot==0){
+                isDot = 1;
+                sb.append(".");
+                tvKwota.setText(sb);}
+                break;
+            case R.id.calcPlus:
+                if (indexOfSign==-1 && sb.length()!=0){
+                    sb.append("+");
+                    tvKwota.setText(sb);
+                    isDot = 0;
+                    indexOfSign=sb.length()-1;
+                    result = null;}
+                break;
+            case R.id.calcMinus:
+                if (indexOfSign==-1 && sb.length()!=0){
+                    sb.append("-");
+                    tvKwota.setText(sb);
+                    isDot = 0;
+                    indexOfSign=sb.length()-1;
+                    result = null;}
+                break;
+            case R.id.calcMultiply:
+                if (indexOfSign==-1 && sb.length()!=0){
+                    sb.append("*");
+                    tvKwota.setText(sb);
+                    isDot = 0;
+                    indexOfSign=sb.length()-1;
+                    result = null;}
+                break;
+            case R.id.calcDivision:
+                if (indexOfSign==-1 && sb.length()!=0){
+                    sb.append("/");
+                    tvKwota.setText(sb);
+                    isDot = 0;
+                    indexOfSign=sb.length()-1;
+                    result = null;}
+                break;
+            case R.id.calcEqual:
+                if(result==null) {
+                    result = calculate(String.valueOf(sb), indexOfSign);
+                    sb.replace(0, sb.length(), result);
+                    tvKwota.setText(sb);
+                    indexOfSign = -1;
+                }
+                break;
+            case R.id.calcDelete:
+                if(sb.length()>0) deleteOneChar();
+                if(sb.length()>0) tvKwota.setText(sb);
+                else tvKwota.setText("Wpisz kwotę");
+                break;
+            case R.id.calcClear: //działa
+                sb.delete(0, sb.length());
+                tvKwota.setText("Wpisz kwotę");
+                indexOfSign = -1;
+                isDot = 0;
+                break;
         }
+    }
+
+    void deleteOneChar(){
+
+        //jeśli usuwa przecinek
+        if(isDot==1){//jeśli przed przecinkiem jest tylko zero (lub po znaku jest tylko zero) to usuń też zero
+            if(sb.charAt(sb.length()-2)=='0') sb.deleteCharAt(sb.length()-1);
+        }
+
+        // jeśli usuwa coś po przecinku
+        if(isDot>0) isDot--;
+
+
+        //jeśli usuwa znak
+        if(sb.length()-1==indexOfSign) { // trzeba dać znać jakoś czy była już kropka i ile miejsc po niej
+            indexOfSign = -1;
+            //albo osobna zmienna na pierwszą i drugą kropkę(i trochę zmian w kodzie), albo sprawdzanie trzech ostatnich charów
+            if (sb.charAt(sb.length() - 2) == '.') isDot=1;
+            else if (sb.charAt(sb.length() - 3) == '.') isDot=2;
+            else if (sb.charAt(sb.length() - 4) == '.') isDot=3;
+        }
+
+        sb.deleteCharAt(sb.length()-1);
     }
 
     void setDate() {
@@ -151,4 +344,44 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
             }
         });
     }
+    //rozdzielenie stringa na składowe i obliczenie wyniku
+    String calculate(String gluedString, int indexOfSign) {
+        if(indexOfSign == -1) return gluedString; //Jeśli nie wpisano znaku, to nie wykonuje obliczeń
+
+        String firstNumber = gluedString.substring(0,indexOfSign);
+        String secondNumber = gluedString.substring(indexOfSign+1);
+        if(secondNumber.equals("")) return firstNumber;
+        char sign = gluedString.charAt(indexOfSign);
+
+        double a=Double.parseDouble(firstNumber);
+        double b=Double.parseDouble(secondNumber);
+        Double doubleValue;
+        String textValue;
+
+        if(sign=='/' && b == 0) {
+            Toast.makeText(getApplicationContext(),"Nie dzielimy przez zero!", Toast.LENGTH_SHORT).show();
+            return gluedString;
+        }
+
+        if (sign == '+'){
+            doubleValue = a+b;
+        }
+        else if (sign == '-'){
+            doubleValue = a-b;
+        }
+        else if (sign == '*'){
+            doubleValue = a*b;
+        }
+        else {
+            doubleValue = a/b;
+        }
+
+        textValue = String.format(Locale.US,"%.2f", doubleValue);
+        return textValue;
+    }
+    void prepareToNextCalculation(){
+        sb.delete(0, sb.length());
+        isDot = 0;
+        indexOfSign = -1;
+        result = null;}
 }
