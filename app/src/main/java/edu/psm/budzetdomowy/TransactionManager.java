@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Locale;
 import java.text.*;
 
+import edu.psm.budzetdomowy.src.CDatabase;
 import edu.psm.budzetdomowy.utils.Category;
 import edu.psm.budzetdomowy.utils.Transaction;
 
@@ -137,8 +139,18 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
                 break;
 
             case R.id.zatwierdz:
-                if(result!=null) {
-                    //instrukcje jak sprawdzić co jest do zapisu i przesłanie danych do bazy plus przejście do homepage
+                if(result!=null || indexOfSign==-1) { //jeśli dodaje ktoś wynik lub nie postawił jeszcze znaku działania
+                    float finalValue =  Float.parseFloat(String.valueOf(sb));
+                    System.out.println(finalValue);
+                    //CDatabase.addTransation(finalValue, transactionDate, transactionType, selectedCategory, "notatka");
+                    Intent intent = new Intent(this, homepage.class); //nie działa :/
+                }
+                else { //jeśli był znak działania to usuń go i to co po nim, bierzemy pierwszą wartość
+                    sb.delete(indexOfSign, sb.length());
+                    tvKwota.setText(sb);
+                    float finalValue =  Float.parseFloat(String.valueOf(sb));
+                    System.out.println("zmodyfikowana: " + finalValue);
+                    Intent intent = new Intent(this, homepage.class);
                 }
                 break;
 
