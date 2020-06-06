@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import edu.psm.budzetdomowy.utils.Transaction;
-
 public class CDatabase extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "HomeBudget";
 
@@ -61,7 +59,7 @@ public class CDatabase extends SQLiteOpenHelper {
                 CTransaction transaction = new CTransaction(
                     cursor.getInt(0),
                     cursor.getFloat(1),
-                    new Date(cursor.getInt(2)),
+                    new Date(cursor.getLong(2)),
                     cursor.getInt(3),
                     cursor.getString(4),
                     cursor.getString(5)
