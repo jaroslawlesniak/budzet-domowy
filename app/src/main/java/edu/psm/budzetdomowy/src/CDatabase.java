@@ -28,12 +28,12 @@ public class CDatabase extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("" +
                 "CREATE TABLE IF NOT EXISTS " + TRANSACTIONS_TABLE_NAME + "(" +
-                    TRANSACTION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    TRANSACTION_VALUE + " REAL, " +
-                    TRANSACTION_DATE + " NUMERIC, " +
-                    TRANSACTION_TYPE + " INTEGER, " +
-                    TRANSACTION_CATEGORY + " TEXT, " +
-                    TRANSACTION_NOTE + " TEXT)"
+                TRANSACTION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                TRANSACTION_VALUE + " REAL, " +
+                TRANSACTION_DATE + " NUMERIC, " +
+                TRANSACTION_TYPE + " INTEGER, " +
+                TRANSACTION_CATEGORY + " TEXT, " +
+                TRANSACTION_NOTE + " TEXT)"
         );
     }
 
@@ -45,14 +45,14 @@ public class CDatabase extends SQLiteOpenHelper {
 
     public Cursor getTransactions(Date startDate, Date endDate) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "SELECT * FROM " + TRANSACTIONS_TABLE_NAME + " WHERE " + TRANSACTION_DATE + " <= " + endDate + " AND " + TRANSACTION_DATE + " >= " + startDate, null );
+        Cursor res =  db.rawQuery( "SELECT * FROM " + TRANSACTIONS_TABLE_NAME + " WHERE " + TRANSACTION_DATE + " <= " + endDate.getTime() + " AND " + TRANSACTION_DATE + " >= " + startDate.getTime(), null );
         return res;
     }
 
     public void addTransation(float value, Date date, int type, String category, String note) {
         SQLiteDatabase db = this.getReadableDatabase();
         db.rawQuery("INSERT INTO " + TRANSACTIONS_TABLE_NAME + " (" + TRANSACTION_VALUE + ", " + TRANSACTION_DATE + ", " + TRANSACTION_TYPE + ", " + TRANSACTION_CATEGORY + ", " + TRANSACTION_NOTE + ")" +
-                         "VALUES (" + value +", " + date + ", " + type + ", " + category + ", " + note +  ")", null);
+                "VALUES (" + value +", '" + date.getTime() + "', " + type + ", '" + category + "', '" + note +  "')", null);
     }
 
     public void deleteTransaction(int id) {
@@ -63,10 +63,10 @@ public class CDatabase extends SQLiteOpenHelper {
     public void updateTransaction(int id, float value, Date date, int type, String category, String note) {
         SQLiteDatabase db = this.getReadableDatabase();
         db.rawQuery("UPDATE " + TRANSACTIONS_TABLE_NAME + " SET " +
-               TRANSACTION_VALUE + " = " + value + ", " +
-               TRANSACTION_DATE + " = " + date + ", " +
-               TRANSACTION_TYPE + " = " + type + ", " +
-               TRANSACTION_CATEGORY + " = " + category + ", " +
-               TRANSACTION_NOTE + " = " + note, null);
+                TRANSACTION_VALUE + " = '" + value + "', " +
+                TRANSACTION_DATE + " = " + date.getTime() + ", " +
+                TRANSACTION_TYPE + " = " + type + ", " +
+                TRANSACTION_CATEGORY + " = '" + category + "', " +
+                TRANSACTION_NOTE + " = '" + note + "'", null);
     }
 }

@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +42,7 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
     TextView dateTextView;
     Button submitButton;
     Spinner categoriesList;
+    EditText editTextNote;
 
     final Calendar calendar = Calendar.getInstance();
 
@@ -69,6 +71,7 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
         dateTextView = (TextView) findViewById(R.id.dateTextView);
         submitButton = (Button) findViewById(R.id.submitButton);
         categoriesList = (Spinner) findViewById(R.id.categoriesList);
+        editTextNote = findViewById(R.id.editTextNote);
 
 
         if(selectedCategory != null) {
@@ -77,6 +80,7 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
 
         dateTextView.setOnClickListener(this);
         submitButton.setOnClickListener(this);
+        editTextNote.setOnClickListener(this);
 
         setDate();
         prepareSpinner();
@@ -118,6 +122,8 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
     int isDot2 = 0; //sprawdzenie czy w drugiej liczbie była już kropka użyta : 0 nie, 1 tak, 2/3 jedno/dwa miejsca po przecinku wpisane
     String result = null;
 
+    CDatabase cDatabase = new CDatabase(this);
+
     @Override
     public void onClick(View view) {
         final TextView tvKwota = findViewById(R.id.tvKwota);
@@ -139,19 +145,25 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
                 break;
 
             case R.id.zatwierdz:
-                if(result!=null || indexOfSign==-1) { //jeśli dodaje ktoś wynik lub nie postawił jeszcze znaku działania
-                    float finalValue =  Float.parseFloat(String.valueOf(sb));
-                    System.out.println(finalValue);
-                    //CDatabase.addTransation(finalValue, transactionDate, transactionType, selectedCategory, "notatka");
-                    Intent intent = new Intent(this, homepage.class); //nie działa :/
+                if (sb.length()<=0 || selectedCategory == null){
+                Toast.makeText(this, "wprowadź dane", Toast.LENGTH_SHORT).show();
+                break;
                 }
-                else { //jeśli był znak działania to usuń go i to co po nim, bierzemy pierwszą wartość
+                Date finalDate = new Date(calendar.getTime().getTime());
+                String finalNote = editTextNote.getText().toString();
+                if(indexOfSign!=-1) { //jeśli był znak działania to usuń go i to co po nim, bierzemy pierwszą wartość
                     sb.delete(indexOfSign, sb.length());
                     tvKwota.setText(sb);
-                    float finalValue =  Float.parseFloat(String.valueOf(sb));
-                    System.out.println("zmodyfikowana: " + finalValue);
-                    Intent intent = new Intent(this, homepage.class);
                 }
+                float finalValue =  Float.parseFloat(String.valueOf(sb));
+                cDatabase.addTransation(finalValue, finalDate, transactionType, selectedCategory, finalNote);
+
+                System.out.println(finalValue);
+                System.out.println(finalNote);
+                System.out.println(finalDate);
+
+                Intent intent = new Intent(this, homepage.class);
+                startActivity(intent);
                 break;
 
             case R.id.calc1:
@@ -315,7 +327,8 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
 
     void setDate() {
         DateFormat dateFormat = new SimpleDateFormat("EEEE, d MMMM", new Locale("pl", "PL"));
-        dateTextView.setText(dateFormat.format(calendar.getTime()));
+        String stringDate = dateFormat.format(calendar.getTime());
+        dateTextView.setText(stringDate);
     }
 
     void prepareSpinner() {
