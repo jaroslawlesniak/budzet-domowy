@@ -3,6 +3,7 @@ package edu.psm.budzetdomowy;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +20,14 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
 import edu.psm.budzetdomowy.src.CBalanceSummary;
+import edu.psm.budzetdomowy.src.CDatabase;
 import edu.psm.budzetdomowy.src.CTransaction;
 import edu.psm.budzetdomowy.utils.Category;
 import edu.psm.budzetdomowy.utils.Transaction;
@@ -33,7 +36,8 @@ public class transactionList extends BottomSheetDialogFragment {
 
     LinearLayout linearLayout;
     List<CBalanceSummary> history = new LinkedList<>();
-   List<CTransaction> categoryTransactions;
+    Date startDate, endDate;
+    CDatabase database;
 
     @Nullable
     @Override
@@ -42,34 +46,12 @@ public class transactionList extends BottomSheetDialogFragment {
 
         linearLayout = v.findViewById(R.id.transactions);
 
-        MockData();
+        List<CTransaction> transactions = database.getTransactions(startDate, endDate);
+        history = parseTransactionsToHistory(transactions);
+
         setContentViews();
 
         return v;
-    }
-
-    public void MockData() {
-        //Dodanie testowych danych
-        CBalanceSummary cb1 = new CBalanceSummary(Transaction.INCOME, null);
-        CBalanceSummary cb2 = new CBalanceSummary(Transaction.EXPENSE, Category.CLOTHES);
-        CBalanceSummary cb3 = new CBalanceSummary(Transaction.EXPENSE, Category.FOOD);
-
-        cb1.totalValue = 1455;
-        cb2.totalValue = 5468;
-        cb3.totalValue = 315;
-
-        cb1.transactions.add(new CTransaction(1, 1000, new Date(2020,10,11), Transaction.INCOME, null, ""));
-        cb1.transactions.add(new CTransaction(2, 445, new Date(2020,10,10), Transaction.INCOME, null, ""));
-
-        cb2.transactions.add(new CTransaction(3, 468, new Date(2020,10,11), Transaction.EXPENSE, Category.CLOTHES, ""));
-        cb2.transactions.add(new CTransaction(4, 3000, new Date(2020,10,10), Transaction.EXPENSE, Category.CLOTHES, "Nowe buty"));
-        cb2.transactions.add(new CTransaction(5, 2000, new Date(2020,10,9), Transaction.EXPENSE, Category.CLOTHES, ""));
-
-        cb3.transactions.add(new CTransaction(6, 315, new Date(2020,10,9), Transaction.EXPENSE, Category.FOOD, ""));
-
-        history.add(cb1);
-        history.add(cb2);
-        history.add(cb3);
     }
 
     public void setContentViews() {
@@ -185,5 +167,46 @@ public class transactionList extends BottomSheetDialogFragment {
 
             linearLayout.addView(transactionsLayout);
         }
+    }
+
+    public List<CBalanceSummary> parseTransactionsToHistory(List<CTransaction> transactions) {
+        List<CBalanceSummary> history = new ArrayList<>();
+
+        history.add(new CBalanceSummary(Transaction.INCOME));
+
+        for(CTransaction transaction : transactions) {
+            if(transaction.type == Transaction.INCOME) {
+                history.get(0).totalValue += transaction.value;
+                history.get(0).transactions.add(transaction);
+            } else {
+                int categoryPosistion = getCategoryPosition(transaction.category, history);
+
+                if(categoryPosistion == -1) {
+                    CBalanceSummary balanceSummary = new CBalanceSummary(Transaction.EXPENSE, transaction.category);
+                    balanceSummary.totalValue = transaction.value;
+                    balanceSummary.transactions.add(transaction);
+
+                    history.add(balanceSummary);
+                } else {
+                    history.get(categoryPosistion).totalValue += transaction.value;
+                    history.get(categoryPosistion).transactions.add(transaction);
+                }
+            }
+        }
+
+        return history;
+    }
+
+    private int getCategoryPosition(String category, List<CBalanceSummary> balanceSummaries) {
+        int index = -1;
+
+        for(int i = 0; i < balanceSummaries.size(); i++) {
+            if(balanceSummaries.get(i).category != null && balanceSummaries.get(i).category.equals(category)) {
+                index = i;
+                break;
+            }
+        }
+
+        return index;
     }
 }

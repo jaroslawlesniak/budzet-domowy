@@ -15,4 +15,8 @@ public class CBalanceSummary {
         this.type = type;
         this.category = category;
     }
+
+    public CBalanceSummary(int type) {
+        this.type = type;
+    }
 }
