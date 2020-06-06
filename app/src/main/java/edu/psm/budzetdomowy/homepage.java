@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,17 +22,20 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import edu.psm.budzetdomowy.src.CDatabase;
 import edu.psm.budzetdomowy.utils.Category;
 import edu.psm.budzetdomowy.utils.SummaryInterval;
 import edu.psm.budzetdomowy.utils.Transaction;
 
 public class homepage extends AppCompatActivity implements View.OnClickListener {
-
+    Context context = this;
     // Czy wybieramy podsumowanie z dnia, miesiąca itp.
     int selectedSummaryInterval = SummaryInterval.MONTH;
 
     // Okresy podsumowania - od, do
     Date startSummaryInterval, endSummaryInterval;
+
+    CDatabase database = new CDatabase(this);
 
     TextView selectedInterval;
 
@@ -64,6 +68,9 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
             @Override
             public void onClick(View v) {
                 transactionList e = new transactionList();
+                e.database = new CDatabase(context);
+                e.startDate = startSummaryInterval;
+                e.endDate = endSummaryInterval;
                 e.show(getSupportFragmentManager(), "shdhdhs");
             }
         });
@@ -108,7 +115,7 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
         });
 
         // Ustawienie obecnej daty
-        DateFormat dateFormat = new SimpleDateFormat("dd MM LLLL", new Locale("pl", "PL"));
+        DateFormat dateFormat = new SimpleDateFormat("LLLL", new Locale("pl", "PL"));
         Date date = new Date();
         selectedInterval.setText(dateFormat.format(date).substring(0, 1).toUpperCase() + dateFormat.format(date).substring(1).toLowerCase());
 
@@ -124,8 +131,11 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
         cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
         endSummaryInterval = cal.getTime();
 
-        Log.i("t", dateFormat.format(startSummaryInterval));
-        Log.i("t", dateFormat.format(endSummaryInterval));
+        database.addTransation(15.0f, startSummaryInterval, Transaction.INCOME, Category.FOOD, "");
+        database.addTransation(45.0f, startSummaryInterval, Transaction.EXPENSE, Category.FOOD, "");
+        database.addTransation(15.0f, startSummaryInterval, Transaction.EXPENSE, Category.FOOD, "");
+        database.addTransation(15.0f, startSummaryInterval, Transaction.EXPENSE, Category.CLOTHES, "Buty");
+        database.getTransactions(startSummaryInterval, endSummaryInterval);
     }
 
     protected void openTransactionActivity(String category, int type) {
