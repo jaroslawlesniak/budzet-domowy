@@ -225,7 +225,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/previousInterval"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="40dp"
                     android:layout_height="wrap_content"
@@ -241,7 +241,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
-                    android:id="@+id/button4"
+                    android:id="@+id/nextInterval"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="40dp"
                     android:layout_height="wrap_content"
