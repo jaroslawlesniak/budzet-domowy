@@ -40,7 +40,7 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
     int transactionType;
 
     TextView dateTextView;
-    Button submitButton;
+    Button categoryButton;
     Spinner categoriesList;
     EditText editTextNote;
 
@@ -69,18 +69,17 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
         actionBar.setTitle(transactionType == Transaction.INCOME ? "Dodaj przychód" : "Dodaj wydatek");
 
         dateTextView = (TextView) findViewById(R.id.dateTextView);
-        submitButton = (Button) findViewById(R.id.submitButton);
+        categoryButton = (Button) findViewById(R.id.categoryButton);
         categoriesList = (Spinner) findViewById(R.id.categoriesList);
         editTextNote = findViewById(R.id.editTextNote);
 
 
         if(selectedCategory != null) {
-            submitButton.setText("Dodaj do '" + selectedCategory + "'");
+            categoryButton.setText("Dodaj do '" + selectedCategory + "'");
         }
 
         dateTextView.setOnClickListener(this);
-        submitButton.setOnClickListener(this);
-        editTextNote.setOnClickListener(this);
+        categoryButton.setOnClickListener(this);
 
         setDate();
         prepareSpinner();
@@ -104,7 +103,7 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
         findViewById(R.id.calcEqual).setOnClickListener(this);
         findViewById(R.id.calcDelete).setOnClickListener(this);
         findViewById(R.id.calcClear).setOnClickListener(this);
-        findViewById(R.id.zatwierdz).setOnClickListener(this);
+        findViewById(R.id.submitTransactionButton).setOnClickListener(this);
     }
 
     @Override
@@ -138,13 +137,13 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
                         calendar.get(Calendar.DAY_OF_MONTH)
                 ).show();
             break;
-            case R.id.submitButton:
+            case R.id.categoryButton:
                 if(selectedCategory == null) {
                     categoriesList.performClick();
                 }
                 break;
 
-            case R.id.zatwierdz:
+            case R.id.submitTransactionButton:
                 if (sb.length()<=0 || selectedCategory == null){
                 Toast.makeText(this, "wprowadź dane", Toast.LENGTH_SHORT).show();
                 break;
@@ -357,7 +356,7 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
 
                 if(!isFirstSelect) {
                     selectedCategory = selectedItem;
-                    submitButton.setText("Dodaj do '" + selectedCategory + "'");
+                    categoryButton.setText("Dodaj do '" + selectedCategory + "'");
                 }
 
                 isFirstSelect = false;
