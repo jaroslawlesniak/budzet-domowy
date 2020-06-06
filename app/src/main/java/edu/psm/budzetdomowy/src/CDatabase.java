@@ -33,12 +33,12 @@ public class CDatabase extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("" +
                 "CREATE TABLE IF NOT EXISTS " + TRANSACTIONS_TABLE_NAME + "(" +
-                    TRANSACTION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    TRANSACTION_VALUE + " REAL, " +
-                    TRANSACTION_DATE + " NUMERIC, " +
-                    TRANSACTION_TYPE + " INTEGER, " +
-                    TRANSACTION_CATEGORY + " TEXT, " +
-                    TRANSACTION_NOTE + " TEXT)"
+                TRANSACTION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                TRANSACTION_VALUE + " REAL, " +
+                TRANSACTION_DATE + " NUMERIC, " +
+                TRANSACTION_TYPE + " INTEGER, " +
+                TRANSACTION_CATEGORY + " TEXT, " +
+                TRANSACTION_NOTE + " TEXT)"
         );
     }
 
@@ -50,6 +50,7 @@ public class CDatabase extends SQLiteOpenHelper {
 
     public List<CTransaction> getTransactions(Date startDate, Date endDate) {
         SQLiteDatabase db = this.getReadableDatabase();
+
         Cursor cursor =  db.rawQuery( "SELECT * FROM " + TRANSACTIONS_TABLE_NAME + " WHERE " + TRANSACTION_DATE + " <= " + endDate.getTime() + " AND " + TRANSACTION_DATE + " >= " + startDate.getTime(), null );
 
         List<CTransaction> transactions = new ArrayList<>();

@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -13,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +28,7 @@ import java.util.List;
 import java.util.Locale;
 import java.text.*;
 
+import edu.psm.budzetdomowy.src.CDatabase;
 import edu.psm.budzetdomowy.utils.Category;
 import edu.psm.budzetdomowy.utils.Transaction;
 
@@ -37,8 +40,9 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
     int transactionType;
 
     TextView dateTextView;
-    Button submitButton;
+    Button categoryButton;
     Spinner categoriesList;
+    EditText editTextNote;
 
     final Calendar calendar = Calendar.getInstance();
 
@@ -65,16 +69,17 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
         actionBar.setTitle(transactionType == Transaction.INCOME ? "Dodaj przychód" : "Dodaj wydatek");
 
         dateTextView = (TextView) findViewById(R.id.dateTextView);
-        submitButton = (Button) findViewById(R.id.submitButton);
+        categoryButton = (Button) findViewById(R.id.categoryButton);
         categoriesList = (Spinner) findViewById(R.id.categoriesList);
+        editTextNote = findViewById(R.id.editTextNote);
 
 
         if(selectedCategory != null) {
-            submitButton.setText("Dodaj do '" + selectedCategory + "'");
+            categoryButton.setText("Dodaj do '" + selectedCategory + "'");
         }
 
         dateTextView.setOnClickListener(this);
-        submitButton.setOnClickListener(this);
+        categoryButton.setOnClickListener(this);
 
         setDate();
         prepareSpinner();
@@ -98,7 +103,7 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
         findViewById(R.id.calcEqual).setOnClickListener(this);
         findViewById(R.id.calcDelete).setOnClickListener(this);
         findViewById(R.id.calcClear).setOnClickListener(this);
-        findViewById(R.id.zatwierdz).setOnClickListener(this);
+        findViewById(R.id.submitTransactionButton).setOnClickListener(this);
     }
 
     @Override
@@ -116,6 +121,8 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
     int isDot2 = 0; //sprawdzenie czy w drugiej liczbie była już kropka użyta : 0 nie, 1 tak, 2/3 jedno/dwa miejsca po przecinku wpisane
     String result = null;
 
+    CDatabase cDatabase = new CDatabase(this);
+
     @Override
     public void onClick(View view) {
         final TextView tvKwota = findViewById(R.id.tvKwota);
@@ -130,16 +137,32 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
                         calendar.get(Calendar.DAY_OF_MONTH)
                 ).show();
             break;
-            case R.id.submitButton:
+            case R.id.categoryButton:
                 if(selectedCategory == null) {
                     categoriesList.performClick();
                 }
                 break;
 
-            case R.id.zatwierdz:
-                if(result!=null) {
-                    //instrukcje jak sprawdzić co jest do zapisu i przesłanie danych do bazy plus przejście do homepage
+            case R.id.submitTransactionButton:
+                if (sb.length()<=0 || selectedCategory == null){
+                Toast.makeText(this, "wprowadź dane", Toast.LENGTH_SHORT).show();
+                break;
                 }
+                Date finalDate = new Date(calendar.getTime().getTime());
+                String finalNote = editTextNote.getText().toString();
+                if(indexOfSign!=-1) { //jeśli był znak działania to usuń go i to co po nim, bierzemy pierwszą wartość
+                    sb.delete(indexOfSign, sb.length());
+                    tvKwota.setText(sb);
+                }
+                float finalValue =  Float.parseFloat(String.valueOf(sb));
+                cDatabase.addTransation(finalValue, finalDate, transactionType, selectedCategory, finalNote);
+
+                System.out.println(finalValue);
+                System.out.println(finalNote);
+                System.out.println(finalDate);
+
+                Intent intent = new Intent(this, homepage.class);
+                startActivity(intent);
                 break;
 
             case R.id.calc1:
@@ -303,7 +326,8 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
 
     void setDate() {
         DateFormat dateFormat = new SimpleDateFormat("EEEE, d MMMM", new Locale("pl", "PL"));
-        dateTextView.setText(dateFormat.format(calendar.getTime()));
+        String stringDate = dateFormat.format(calendar.getTime());
+        dateTextView.setText(stringDate);
     }
 
     void prepareSpinner() {
@@ -332,7 +356,7 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
 
                 if(!isFirstSelect) {
                     selectedCategory = selectedItem;
-                    submitButton.setText("Dodaj do '" + selectedCategory + "'");
+                    categoryButton.setText("Dodaj do '" + selectedCategory + "'");
                 }
 
                 isFirstSelect = false;
