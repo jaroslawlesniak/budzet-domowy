@@ -7,12 +7,19 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import edu.psm.budzetdomowy.utils.Category;
 import edu.psm.budzetdomowy.utils.SummaryInterval;
@@ -20,12 +27,20 @@ import edu.psm.budzetdomowy.utils.Transaction;
 
 public class homepage extends AppCompatActivity implements View.OnClickListener {
 
+    // Czy wybieramy podsumowanie z dnia, miesiąca itp.
     int selectedSummaryInterval = SummaryInterval.MONTH;
+
+    // Okresy podsumowania - od, do
+    Date startSummaryInterval, endSummaryInterval;
+
+    TextView selectedInterval;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
+
+        selectedInterval = findViewById(R.id.selectedInterval);
 
         findViewById(R.id.btn1).setOnClickListener(this);
         findViewById(R.id.btn2).setOnClickListener(this);
@@ -91,6 +106,26 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
                 return true;
             }
         });
+
+        // Ustawienie obecnej daty
+        DateFormat dateFormat = new SimpleDateFormat("dd MM LLLL", new Locale("pl", "PL"));
+        Date date = new Date();
+        selectedInterval.setText(dateFormat.format(date).substring(0, 1).toUpperCase() + dateFormat.format(date).substring(1).toLowerCase());
+
+        //Wybór przedziału podumowania, od pierwszego do ostataniego dnia miesiąca
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+
+        // Określenie pierwszego dnia miesiąca
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
+        startSummaryInterval = cal.getTime();
+
+        // Określenie ostatniego dnia miesiąca
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+        endSummaryInterval = cal.getTime();
+
+        Log.i("t", dateFormat.format(startSummaryInterval));
+        Log.i("t", dateFormat.format(endSummaryInterval));
     }
 
     protected void openTransactionActivity(String category, int type) {
