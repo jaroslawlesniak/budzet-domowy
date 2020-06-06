@@ -73,6 +73,11 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
         categoriesList = (Spinner) findViewById(R.id.categoriesList);
         editTextNote = findViewById(R.id.editTextNote);
 
+        if(transactionType == Transaction.INCOME){
+            categoryButton.setVisibility(View.INVISIBLE);
+            selectedCategory = "dochód";
+        }
+
 
         if(selectedCategory != null) {
             categoryButton.setText("Dodaj do '" + selectedCategory + "'");
@@ -359,7 +364,7 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
                     categoryButton.setText("Dodaj do '" + selectedCategory + "'");
                 }
 
-                isFirstSelect = false;
+                isFirstSelect = false; 
             }
 
             @Override
