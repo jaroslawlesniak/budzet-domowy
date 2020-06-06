@@ -86,26 +86,17 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
 
                 if (id == R.id.day) {
                     selectedSummaryInterval = SummaryInterval.DAY;
+                    setSummaryInterval(SummaryInterval.DAY);
                 }
 
                 if (id == R.id.week) {
                     selectedSummaryInterval = SummaryInterval.WEEK;
+                    setSummaryInterval(SummaryInterval.WEEK);
                 }
 
                 if (id == R.id.month) {
                     selectedSummaryInterval = SummaryInterval.MONTH;
-                }
-
-                if (id == R.id.year) {
-                    selectedSummaryInterval = SummaryInterval.YEAR;
-                }
-
-                if (id == R.id.year) {
-                    selectedSummaryInterval = SummaryInterval.ALL;
-                }
-
-                if (id == R.id.custom) {
-                    selectedSummaryInterval = SummaryInterval.CUSTOM_DAY;
+                    setSummaryInterval(SummaryInterval.MONTH);
                 }
 
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -130,12 +121,6 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
         // Określenie ostatniego dnia miesiąca
         cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
         endSummaryInterval = cal.getTime();
-
-        database.addTransation(15.0f, startSummaryInterval, Transaction.INCOME, Category.FOOD, "");
-        database.addTransation(45.0f, startSummaryInterval, Transaction.EXPENSE, Category.FOOD, "");
-        database.addTransation(15.0f, startSummaryInterval, Transaction.EXPENSE, Category.FOOD, "");
-        database.addTransation(15.0f, startSummaryInterval, Transaction.EXPENSE, Category.CLOTHES, "Buty");
-        database.getTransactions(startSummaryInterval, endSummaryInterval);
     }
 
     protected void openTransactionActivity(String category, int type) {
@@ -193,5 +178,42 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
                 openTransactionActivity(null, Transaction.EXPENSE);
                 break;
         }
+    }
+
+    private void setSummaryInterval(int type) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+
+        if(type == SummaryInterval.DAY) {
+            startSummaryInterval = cal.getTime();
+            endSummaryInterval = cal.getTime();
+        }
+        if(type == SummaryInterval.WEEK) {
+            cal.set(Calendar.DAY_OF_WEEK, cal.getActualMinimum(Calendar.DAY_OF_WEEK));
+            startSummaryInterval = cal.getTime();
+            cal.set(Calendar.DAY_OF_WEEK, cal.getActualMaximum(Calendar.DAY_OF_WEEK));
+            endSummaryInterval = cal.getTime();
+        }
+        if(type == SummaryInterval.MONTH) {
+            cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
+            startSummaryInterval = cal.getTime();
+            cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+            endSummaryInterval = cal.getTime();
+        }
+        if(type == SummaryInterval.YEAR) {
+            cal.set(Calendar.DAY_OF_YEAR, cal.getActualMinimum(Calendar.DAY_OF_YEAR));
+            startSummaryInterval = cal.getTime();
+            cal.set(Calendar.DAY_OF_YEAR, cal.getActualMaximum(Calendar.DAY_OF_YEAR));
+            endSummaryInterval = cal.getTime();
+        }
+
+        DateFormat dateFormat = new SimpleDateFormat("d MMMM YYYY", new Locale("pl", "PL"));
+
+        if(type == SummaryInterval.DAY) {
+            selectedInterval.setText(dateFormat.format(startSummaryInterval));
+        } else {
+            selectedInterval.setText(dateFormat.format(startSummaryInterval) + " - " + dateFormat.format(endSummaryInterval));
+        }
+
     }
 }
