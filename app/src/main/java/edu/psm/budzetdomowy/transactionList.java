@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -48,6 +49,7 @@ public class transactionList extends BottomSheetDialogFragment {
     Date startDate, endDate;
     CDatabase database;
     private ActionMode mActionMode;
+    transactionList context = this;
 
 
 
@@ -147,33 +149,32 @@ public class transactionList extends BottomSheetDialogFragment {
             });
 
             // Dodanie wszystkich transakcji dla danej kategorii
-            for(CTransaction transaction : category.transactions) {
+            for(final CTransaction transaction : category.transactions) {
                 View view = getLayoutInflater().inflate(R.layout.transactions_layout, null);
 
                 TextView price = view.findViewById(R.id.totalValue);
                 TextView date = view.findViewById(R.id.date);
                 TextView note = view.findViewById(R.id.note);
                 TextView icon = view.findViewById(R.id.icon);
+                ImageButton deleteTransaction = view.findViewById(R.id.button);
                 final ConstraintLayout transactionLayout = view.findViewById(R.id.layout);
 
+                deleteTransaction.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        Toast.makeText(getContext(),"Przytrzymaj, by usunąć.",Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-//                transactionLayout.setOnLongClickListener(new View.OnLongClickListener() {
-//                    @Override
-//                    public boolean onLongClick(View v) {
-//                        if (mActionMode != null) {
-//                            return false;
-//                        }
-//                        transactionLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-//                        mActionMode = getActivity().startActionMode(mActionModeCallback);
-//                        return true;
-//                    }
-//                });
 
-                transactionLayout.setOnLongClickListener(new View.OnLongClickListener() {
+                deleteTransaction.setOnLongClickListener(new View.OnLongClickListener() {
                      public boolean onLongClick(View v) {
-                         System.out.println("id elementu" + v.getId());
-                         OptionDialog optionDialog = new OptionDialog();
-                         optionDialog.show(getFragmentManager(), "cokolwiek");
+                         System.out.println("id elementu" + transaction.id);
+                         database.deleteTransaction(transaction.id);
+                         context.dismiss();
+                         List<CTransaction> transactions = database.getTransactions(startDate, endDate);
+                         history = parseTransactionsToHistory(transactions);
+
+                         setContentViews();
                          return true;
                      }
                 });
@@ -205,39 +206,6 @@ public class transactionList extends BottomSheetDialogFragment {
             linearLayout.addView(transactionsLayout);
         }
     }
-//to można wyrzucić
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            mode.getMenuInflater().inflate(R.menu.edit_transaction_menu, menu);
-            mode.setTitle("Wybierz opcję");
-            return true;
-        }
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false;
-        }
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.edit_transaction:
-                    System.out.println("edycja");
-                    mode.finish();
-                    return true;
-                case R.id.delete_transaction:
-                    System.out.println("usuwanie");
-                    mode.finish();
-                    return true;
-                default:
-                    return false;
-            }
-        }
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            mActionMode = null;
-        }
-    };
-
 
     public List<CBalanceSummary> parseTransactionsToHistory(List<CTransaction> transactions) {
         List<CBalanceSummary> history = new ArrayList<>();

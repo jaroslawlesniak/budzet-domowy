@@ -28,6 +28,7 @@ public class OptionDialog extends DialogFragment {
                 })
                 .setNegativeButton("Usuń", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+
                         System.out.println(id);
 //                        cDatabase.deleteTransaction(id);
                         //trzeba przesłać id
