@@ -18,7 +18,7 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/sport"
                 app:layout_constraintBottom_toTopOf="@+id/btn12"
-                app:layout_constraintEnd_toStartOf="@+id/imageView3"
+                app:layout_constraintEnd_toStartOf="@+id/chart"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
@@ -40,7 +40,7 @@
                 android:background="@drawable/restauracja"
                 app:layout_constraintBottom_toTopOf="@+id/btn5"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView3"
+                app:layout_constraintStart_toEndOf="@+id/chart"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
             <ImageButton
@@ -50,7 +50,7 @@
                 android:background="@drawable/kosmetyki"
                 app:layout_constraintBottom_toTopOf="@+id/btn6"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView3"
+                app:layout_constraintStart_toEndOf="@+id/chart"
                 app:layout_constraintTop_toBottomOf="@+id/btn4" />
 
             <ImageButton
@@ -60,7 +60,7 @@
                 android:background="@drawable/media"
                 app:layout_constraintBottom_toTopOf="@+id/btn7"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView3"
+                app:layout_constraintStart_toEndOf="@+id/chart"
                 app:layout_constraintTop_toBottomOf="@+id/btn5" />
 
             <ImageButton
@@ -70,7 +70,7 @@
                 android:background="@drawable/taxi"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView3"
+                app:layout_constraintStart_toEndOf="@+id/chart"
                 app:layout_constraintTop_toBottomOf="@+id/btn6" />
 
             <ImageButton
@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/ubrania"
                 app:layout_constraintBottom_toTopOf="@+id/btn11"
-                app:layout_constraintEnd_toStartOf="@+id/imageView3"
+                app:layout_constraintEnd_toStartOf="@+id/chart"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn1" />
 
@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/transport"
                 app:layout_constraintBottom_toTopOf="@+id/btn10"
-                app:layout_constraintEnd_toStartOf="@+id/imageView3"
+                app:layout_constraintEnd_toStartOf="@+id/chart"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn12" />
 
@@ -99,7 +99,7 @@
                 android:layout_height="45dp"
                 android:background="@drawable/zdrowie"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageView3"
+                app:layout_constraintEnd_toStartOf="@+id/chart"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn11" />
 
@@ -139,17 +139,18 @@
                 app:layout_constraintEnd_toStartOf="@+id/btn7"
                 app:layout_constraintStart_toEndOf="@+id/btn9" />
 
-            <ImageView
-                android:id="@+id/imageView3"
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/chart"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="60dp"
                 android:layout_marginEnd="60dp"
                 app:layout_constraintBottom_toTopOf="@+id/btn9"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/home"
-                app:srcCompat="@drawable/chart" />
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/incomeText"
