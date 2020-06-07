@@ -143,9 +143,7 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
                 ).show();
             break;
             case R.id.categoryButton:
-                if(selectedCategory == null) {
                     categoriesList.performClick();
-                }
                 break;
 
             case R.id.submitTransactionButton:
@@ -360,12 +358,11 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
                 String selectedItem = parent.getSelectedItem().toString();
 
                 if(!isFirstSelect) {
+                    categoryButton.setText("Dodaj do '" + selectedItem + "'");
                     selectedCategory = selectedItem;
-                    categoryButton.setText("Dodaj do '" + selectedCategory + "'");
                 }
-
-                isFirstSelect = false; 
-            }
+                isFirstSelect = false;
+           }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
