@@ -1,20 +1,29 @@
 package edu.psm.budzetdomowy;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -38,6 +47,10 @@ public class transactionList extends BottomSheetDialogFragment {
     List<CBalanceSummary> history = new LinkedList<>();
     Date startDate, endDate;
     CDatabase database;
+    private ActionMode mActionMode;
+
+
+
 
     @Nullable
     @Override
@@ -141,7 +154,31 @@ public class transactionList extends BottomSheetDialogFragment {
                 TextView date = view.findViewById(R.id.date);
                 TextView note = view.findViewById(R.id.note);
                 TextView icon = view.findViewById(R.id.icon);
-                ConstraintLayout transactionLayout = view.findViewById(R.id.layout);
+                final ConstraintLayout transactionLayout = view.findViewById(R.id.layout);
+
+
+//                transactionLayout.setOnLongClickListener(new View.OnLongClickListener() {
+//                    @Override
+//                    public boolean onLongClick(View v) {
+//                        if (mActionMode != null) {
+//                            return false;
+//                        }
+//                        transactionLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+//                        mActionMode = getActivity().startActionMode(mActionModeCallback);
+//                        return true;
+//                    }
+//                });
+
+                transactionLayout.setOnLongClickListener(new View.OnLongClickListener() {
+                     public boolean onLongClick(View v) {
+                         System.out.println("działa long click");
+                         OptionDialog optionDialog = new OptionDialog();
+                         optionDialog.show(getFragmentManager(), "cokolwiek");
+                         return true;
+                     }
+                });
+
+
 
                 DateFormat dateFormat = new SimpleDateFormat("d MMMM", new Locale("pl", "PL"));
                 date.setText(dateFormat.format(transaction.date.getTime()));
@@ -168,6 +205,39 @@ public class transactionList extends BottomSheetDialogFragment {
             linearLayout.addView(transactionsLayout);
         }
     }
+//to można wyrzucić
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.edit_transaction_menu, menu);
+            mode.setTitle("Wybierz opcję");
+            return true;
+        }
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.edit_transaction:
+                    System.out.println("edycja");
+                    mode.finish();
+                    return true;
+                case R.id.delete_transaction:
+                    System.out.println("usuwanie");
+                    mode.finish();
+                    return true;
+                default:
+                    return false;
+            }
+        }
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mActionMode = null;
+        }
+    };
+
 
     public List<CBalanceSummary> parseTransactionsToHistory(List<CTransaction> transactions) {
         List<CBalanceSummary> history = new ArrayList<>();
@@ -209,4 +279,6 @@ public class transactionList extends BottomSheetDialogFragment {
 
         return index;
     }
+
+
 }

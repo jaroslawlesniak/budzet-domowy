@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/backgroundColor"
-    android:padding="10sp">
+    android:padding="10sp"
+    android:onClick="showOptions"
+    >
 
     <TextView
         android:id="@+id/icon"
