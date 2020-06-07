@@ -33,6 +33,10 @@ public class CDatabase extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, 2);
     }
 
+    /**
+     * Tworznie bazy danych
+     * @param sqLiteDatabase baza danych SQLite
+     */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("" +
@@ -46,12 +50,19 @@ public class CDatabase extends SQLiteOpenHelper {
         );
     }
 
+
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TRANSACTIONS_TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 
+    /**
+     * Odczytanie listy transakcji z podanego przedziału
+     * @param startDate Początek szukania
+     * @param endDate Koniec szukania
+     * @return Lista transakcji
+     */
     public List<CTransaction> getTransactions(Date startDate, Date endDate) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -82,6 +93,14 @@ public class CDatabase extends SQLiteOpenHelper {
         return transactions;
     }
 
+    /**
+     * Dodanie nowej transakcji do BD
+     * @param value Wartość transakcji
+     * @param date Data transakcji
+     * @param type Typ transakcji
+     * @param category Kategoria transakcji
+     * @param note Notatka transakcji
+     */
     public void addTransation(float value, Date date, int type, String category, String note) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -98,6 +117,10 @@ public class CDatabase extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Usunięcie transakcji
+     * @param id ID transakcji
+     */
     public void deleteTransaction(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -106,6 +129,15 @@ public class CDatabase extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Aktualizacja transakcji
+     * @param id ID transakcji
+     * @param value Wartość transakcji
+     * @param date Data transakcji
+     * @param type Typ transakcji
+     * @param category Kategoria transakcji
+     * @param note Notatka transakcji
+     */
     public void updateTransaction(int id, float value, Date date, int type, String category, String note) {
         SQLiteDatabase db = this.getReadableDatabase();
       
@@ -122,6 +154,12 @@ public class CDatabase extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Odtytanie przychodów w podanym przedziale czasowym
+     * @param startDate Początek zakresu
+     * @param endDate Koniec zakresu
+     * @return Suma przychodów
+     */
     public float getIncomeForInterval(Date startDate, Date endDate) {
         String query = "SELECT SUM(" + TRANSACTION_VALUE + ") AS income FROM " + TRANSACTIONS_TABLE_NAME + " WHERE " + TRANSACTION_DATE + " <= " + endDate.getTime() + " AND " + TRANSACTION_DATE + " >= " + startDate.getTime() + " AND " + TRANSACTION_TYPE + " = " + Transaction.INCOME;
         float income = 0.0f;
@@ -141,6 +179,12 @@ public class CDatabase extends SQLiteOpenHelper {
         return income;
     }
 
+    /**
+     * Odczytanie sumy wydatków z podanego zakresu
+     * @param startDate Początek zakresu
+     * @param endDate Koniec zakresu
+     * @return Suma wydatków
+     */
     public float getExpenseForInterval(Date startDate, Date endDate) {
         String query = "SELECT SUM(" + TRANSACTION_VALUE + ") AS expense FROM " + TRANSACTIONS_TABLE_NAME + " WHERE " + TRANSACTION_DATE + " <= " + endDate.getTime() + " AND " + TRANSACTION_DATE + " >= " + startDate.getTime() + " AND " + TRANSACTION_TYPE + " = " + Transaction.EXPENSE;
         float expense = 0.0f;
@@ -160,6 +204,10 @@ public class CDatabase extends SQLiteOpenHelper {
         return expense;
     }
 
+    /**
+     * Odczytanie dostepnych środków
+     * @return Zwraca dostępne środki
+     */
     public float getAvaliableMoney() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -180,6 +228,12 @@ public class CDatabase extends SQLiteOpenHelper {
         return money;
     }
 
+    /**
+     * Odczytanie wydatków na poszczególne kategorie w podanym przedziale czasowym
+     * @param startDate Początek zakresu
+     * @param endDate Koniec zakresu
+     * @return Lista kategorii wraz z ich sumą
+     */
     public List<CSummary> getCategoriesSummaryCost(Date startDate, Date endDate) {
         String query = "SELECT " + TRANSACTION_CATEGORY + ", SUM(" + TRANSACTION_VALUE + ") AS value FROM " + TRANSACTIONS_TABLE_NAME + " WHERE " + TRANSACTION_DATE + " <= " + endDate.getTime() + " AND " + TRANSACTION_DATE + " >= " + startDate.getTime() + " AND " + TRANSACTION_TYPE + " = " + Transaction.EXPENSE + " GROUP BY " + TRANSACTION_CATEGORY;
 

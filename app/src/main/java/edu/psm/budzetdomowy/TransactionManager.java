@@ -304,6 +304,9 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
         }
     }
 
+    /**
+     * Usunięcie znaków specjalnych z ciągu znaków
+     */
     void deleteOneChar(){
 
         //jeśli usuwa przecinek
@@ -327,12 +330,18 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
         sb.deleteCharAt(sb.length()-1);
     }
 
+    /**
+     * Ustawienie daty z DatePickera
+     */
     void setDate() {
         DateFormat dateFormat = new SimpleDateFormat("EEEE, d MMMM", new Locale("pl", "PL"));
         String stringDate = dateFormat.format(calendar.getTime());
         dateTextView.setText(stringDate);
     }
 
+    /**
+     * Przygotowanie danych dla spinnera
+     */
     void prepareSpinner() {
         List<String> list = new ArrayList<>();
 
@@ -370,7 +379,13 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
             }
         });
     }
-    //rozdzielenie stringa na składowe i obliczenie wyniku
+
+    /**
+     * Rozdzielenie stringa na składowe i obliczenie wyniku
+     * @param gluedString Znak łączący
+     * @param indexOfSign Pozycja znaku łączącego
+     * @return Wynik operacji matematycznej
+     */
     String calculate(String gluedString, int indexOfSign) {
         if(indexOfSign == -1) return gluedString; //Jeśli nie wpisano znaku, to nie wykonuje obliczeń
 
@@ -405,6 +420,10 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
         textValue = String.format(Locale.US,"%.2f", doubleValue);
         return textValue;
     }
+
+    /**
+     * Wyczyszczenie wszystkich informacji o operacjach matematycznych
+     */
     void prepareToNextCalculation(){
         sb.delete(0, sb.length());
         isDot = 0;

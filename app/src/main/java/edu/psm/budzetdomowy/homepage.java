@@ -53,6 +53,10 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
 
     TextView sport, home, entertainment, food, cosmetics, media, taxi, shopping, animals, health, transport, clothes;
 
+    /**
+     * Funkcja wywołująca siębezpośrednio po uruchomieniu aplikacji
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,6 +171,11 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
         refreshSummary();
     }
 
+    /**
+     * Otwarcie zakładki dodawania transakcji
+     * @param category Domyślnie wybrana kategoria transakcji
+     * @param type Typ transakcji przychód/wydatek
+     */
     protected void openTransactionActivity(String category, int type) {
         Intent intent = new Intent(getBaseContext(), TransactionManager.class);
 
@@ -176,6 +185,10 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
         startActivity(intent);
     }
 
+    /**
+     * Metoda wykonywana po kliknięciu na jakiś element
+     * @param view
+     */
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
@@ -230,6 +243,10 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
+    /**
+     * Ustawienie okresu podsumownia
+     * @param type Typ podsumowania dzień/miesiąć itp.
+     */
     private void setSummaryInterval(int type) {
         selectedSummaryInterval = type;
 
@@ -282,6 +299,10 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
         refreshSummary();
     }
 
+    /**
+     * Zmiana okresu podsumowania
+     * @param type Czy zwiekszamy czy zmniejszamy okres
+     */
     private void changeSummaryInterval(int type) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(startSummaryInterval);
@@ -330,6 +351,9 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
         refreshSummary();
     }
 
+    /**
+     * Odświeżenie wykresów i statystyk podsumowania
+     */
     public void refreshSummary() {
         float income, expense, saldo, avaliableMoney;
         List<CSummary> categories;

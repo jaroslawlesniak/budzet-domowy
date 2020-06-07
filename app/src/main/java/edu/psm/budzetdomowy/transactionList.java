@@ -54,6 +54,9 @@ public class transactionList extends BottomSheetDialogFragment {
         return v;
     }
 
+    /**
+     * Przypisanie listy transakcji do dolnego wysuwanego modala
+     */
     public void setContentViews() {
         //Wyświetlanie wszystkich kategorii
         for(CBalanceSummary category : history) {
@@ -169,6 +172,11 @@ public class transactionList extends BottomSheetDialogFragment {
         }
     }
 
+    /**
+     * Zmiana listy transakcji na pogrupowane transakcje
+     * @param transactions Lista transakcji
+     * @return Pogrupowane transakcje
+     */
     public List<CBalanceSummary> parseTransactionsToHistory(List<CTransaction> transactions) {
         List<CBalanceSummary> history = new ArrayList<>();
 
@@ -197,6 +205,12 @@ public class transactionList extends BottomSheetDialogFragment {
         return history;
     }
 
+    /**
+     * Odczytwanie pozycji kategorii z listy kategorii
+     * @param category Szukana kategoria
+     * @param balanceSummaries Lista kategorii
+     * @return Zwraca pozycję w tablicy albo -1 jeśli nie znaleziono
+     */
     private int getCategoryPosition(String category, List<CBalanceSummary> balanceSummaries) {
         int index = -1;
 

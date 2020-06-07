@@ -11,6 +11,11 @@ public class CBalanceSummary {
     public int type;
     public String category;
 
+    /**
+     * Konstruktor tworzący obiekt CBalanceSummary
+     * @param type Typ transkacji
+     * @param category Kategoria tranaskcji
+     */
     public CBalanceSummary(int type, String category) {
         this.type = type;
         this.category = category;
