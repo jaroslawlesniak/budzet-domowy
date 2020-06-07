@@ -152,7 +152,7 @@
                 app:srcCompat="@drawable/chart" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/incomeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
@@ -167,7 +167,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/expenseText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -177,7 +177,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                app:layout_constraintTop_toBottomOf="@+id/incomeText" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout2"
@@ -197,7 +197,7 @@
                     android:textColor="@color/cardview_light_background"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView5" />
+                    app:layout_constraintTop_toBottomOf="@+id/avaliableMoney" />
 
                 <TextView
                     android:id="@+id/textView4"
@@ -212,7 +212,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/avaliableMoney"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -298,7 +298,7 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/saldoBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="80dp"
@@ -318,20 +318,20 @@
                 android:layout_width="30dp"
                 android:layout_height="20dp"
                 android:background="@drawable/hamburger_menu"
-                app:layout_constraintBottom_toBottomOf="@+id/button2"
-                app:layout_constraintEnd_toStartOf="@+id/button2"
+                app:layout_constraintBottom_toBottomOf="@+id/saldoBtn"
+                app:layout_constraintEnd_toStartOf="@+id/saldoBtn"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/button2" />
+                app:layout_constraintTop_toTopOf="@+id/saldoBtn" />
 
             <Button
                 android:id="@+id/button5"
                 android:layout_width="30dp"
                 android:layout_height="20dp"
                 android:background="@drawable/hamburger_menu"
-                app:layout_constraintBottom_toBottomOf="@+id/button2"
+                app:layout_constraintBottom_toBottomOf="@+id/saldoBtn"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/button2"
-                app:layout_constraintTop_toTopOf="@+id/button2" />
+                app:layout_constraintStart_toEndOf="@+id/saldoBtn"
+                app:layout_constraintTop_toTopOf="@+id/saldoBtn" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
