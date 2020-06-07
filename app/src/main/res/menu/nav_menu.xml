@@ -16,12 +16,4 @@
         android:id="@+id/year"
         android:title="Rok">
     </item>
-    <item
-        android:id="@+id/all"
-        android:title="Wszystkie">
-    </item>
-    <item
-        android:id="@+id/custom"
-        android:title="Wybierz datę">
-    </item>
 </menu>

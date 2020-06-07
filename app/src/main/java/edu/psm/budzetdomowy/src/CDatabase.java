@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import edu.psm.budzetdomowy.utils.Transaction;
-
 public class CDatabase extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "HomeBudget";
 
@@ -26,7 +24,7 @@ public class CDatabase extends SQLiteOpenHelper {
     private static final String TRANSACTION_NOTE = "Note";
 
     public CDatabase(@Nullable Context context) {
-        super(context, DATABASE_NAME, null, 1);
+        super(context, DATABASE_NAME, null, 2);
     }
 
     @Override
@@ -59,12 +57,12 @@ public class CDatabase extends SQLiteOpenHelper {
         {
             do {
                 CTransaction transaction = new CTransaction(
-                        cursor.getInt(0),
-                        cursor.getFloat(1),
-                        new Date(cursor.getInt(2)),
-                        cursor.getInt(3),
-                        cursor.getString(4),
-                        cursor.getString(5)
+                    cursor.getInt(0),
+                    cursor.getFloat(1),
+                    new Date(cursor.getLong(2)),
+                    cursor.getInt(3),
+                    cursor.getString(4),
+                    cursor.getString(5)
                 );
 
                 transactions.add(transaction);
@@ -96,16 +94,25 @@ public class CDatabase extends SQLiteOpenHelper {
 
     public void deleteTransaction(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        db.rawQuery("DELETE FROM " + TRANSACTIONS_TABLE_NAME + " WHERE " + TRANSACTION_ID + " = " + id, null);
+
+        db.delete(TRANSACTIONS_TABLE_NAME, TRANSACTION_ID + "=" + id, null);
+
+        db.close();
     }
 
     public void updateTransaction(int id, float value, Date date, int type, String category, String note) {
         SQLiteDatabase db = this.getReadableDatabase();
-        db.rawQuery("UPDATE " + TRANSACTIONS_TABLE_NAME + " SET " +
-                TRANSACTION_VALUE + " = '" + value + "', " +
-                TRANSACTION_DATE + " = " + date.getTime() + ", " +
-                TRANSACTION_TYPE + " = " + type + ", " +
-                TRANSACTION_CATEGORY + " = '" + category + "', " +
-                TRANSACTION_NOTE + " = '" + note + "'", null);
+      
+        ContentValues cv = new ContentValues();
+
+        cv.put(TRANSACTION_VALUE, value);
+        cv.put(TRANSACTION_DATE, date.getTime());
+        cv.put(TRANSACTION_NOTE, note);
+        cv.put(TRANSACTION_CATEGORY, category);
+        cv.put(TRANSACTION_TYPE, type);
+
+        db.update(TRANSACTIONS_TABLE_NAME, cv, TRANSACTION_ID + "=" + id, null);
+
+        db.close();
     }
 }

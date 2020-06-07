@@ -58,6 +58,8 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
         findViewById(R.id.btn10).setOnClickListener(this);
         findViewById(R.id.btn11).setOnClickListener(this);
         findViewById(R.id.btn12).setOnClickListener(this);
+        findViewById(R.id.nextInterval).setOnClickListener(this);
+        findViewById(R.id.previousInterval).setOnClickListener(this);
 
         findViewById(R.id.addIncome).setOnClickListener(this);
         findViewById(R.id.addExpense).setOnClickListener(this);
@@ -85,27 +87,19 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
                 int id = menuItem.getItemId();
 
                 if (id == R.id.day) {
-                    selectedSummaryInterval = SummaryInterval.DAY;
+                    setSummaryInterval(SummaryInterval.DAY);
                 }
 
                 if (id == R.id.week) {
-                    selectedSummaryInterval = SummaryInterval.WEEK;
+                    setSummaryInterval(SummaryInterval.WEEK);
                 }
 
                 if (id == R.id.month) {
-                    selectedSummaryInterval = SummaryInterval.MONTH;
+                    setSummaryInterval(SummaryInterval.MONTH);
                 }
 
                 if (id == R.id.year) {
-                    selectedSummaryInterval = SummaryInterval.YEAR;
-                }
-
-                if (id == R.id.year) {
-                    selectedSummaryInterval = SummaryInterval.ALL;
-                }
-
-                if (id == R.id.custom) {
-                    selectedSummaryInterval = SummaryInterval.CUSTOM_DAY;
+                    setSummaryInterval(SummaryInterval.YEAR);
                 }
 
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -123,6 +117,12 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
 
+        // Ustawienie początku dnia
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+
         // Określenie pierwszego dnia miesiąca
         cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
         startSummaryInterval = cal.getTime();
@@ -130,12 +130,6 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
         // Określenie ostatniego dnia miesiąca
         cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
         endSummaryInterval = cal.getTime();
-
-        database.addTransation(15.0f, startSummaryInterval, Transaction.INCOME, Category.FOOD, "");
-        database.addTransation(45.0f, startSummaryInterval, Transaction.EXPENSE, Category.FOOD, "");
-        database.addTransation(15.0f, startSummaryInterval, Transaction.EXPENSE, Category.FOOD, "");
-        database.addTransation(15.0f, startSummaryInterval, Transaction.EXPENSE, Category.CLOTHES, "Buty");
-        database.getTransactions(startSummaryInterval, endSummaryInterval);
     }
 
     protected void openTransactionActivity(String category, int type) {
@@ -192,6 +186,106 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
             case R.id.addExpense:
                 openTransactionActivity(null, Transaction.EXPENSE);
                 break;
+            case R.id.nextInterval:
+                changeSummaryInterval(1);
+                break;
+            case R.id.previousInterval:
+                changeSummaryInterval(-1);
+                break;
+        }
+    }
+
+    private void setSummaryInterval(int type) {
+        selectedSummaryInterval = type;
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+
+        // Ustawienie początku dnia
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        if(type == SummaryInterval.DAY) {
+            startSummaryInterval = cal.getTime();
+            cal.add(Calendar.DATE, 1);
+            cal.add(Calendar.SECOND, -1);
+            endSummaryInterval = cal.getTime();
+        }
+
+        if(type == SummaryInterval.WEEK) {
+            cal.set(Calendar.DAY_OF_WEEK, cal.getActualMinimum(Calendar.DAY_OF_WEEK));
+            startSummaryInterval = cal.getTime();
+            cal.set(Calendar.DAY_OF_WEEK, cal.getActualMaximum(Calendar.DAY_OF_WEEK));
+            endSummaryInterval = cal.getTime();
+        }
+
+        if(type == SummaryInterval.MONTH) {
+            cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
+            startSummaryInterval = cal.getTime();
+            cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+            endSummaryInterval = cal.getTime();
+        }
+
+        if(type == SummaryInterval.YEAR) {
+            cal.set(Calendar.DAY_OF_YEAR, cal.getActualMinimum(Calendar.DAY_OF_YEAR));
+            startSummaryInterval = cal.getTime();
+            cal.set(Calendar.DAY_OF_YEAR, cal.getActualMaximum(Calendar.DAY_OF_YEAR));
+            endSummaryInterval = cal.getTime();
+        }
+
+        DateFormat dateFormat = new SimpleDateFormat("d MMMM YYYY", new Locale("pl", "PL"));
+
+        if(type == SummaryInterval.DAY) {
+            selectedInterval.setText(dateFormat.format(startSummaryInterval));
+        } else {
+            selectedInterval.setText(dateFormat.format(startSummaryInterval) + " - " + dateFormat.format(endSummaryInterval));
+        }
+    }
+
+    private void changeSummaryInterval(int type) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startSummaryInterval);
+
+        if(selectedSummaryInterval == SummaryInterval.DAY) {
+            calendar.add(Calendar.DATE, type);
+            startSummaryInterval = calendar.getTime();
+            calendar.add(Calendar.DATE, 1);
+            calendar.add(Calendar.SECOND, -1);
+            endSummaryInterval = calendar.getTime();
+        }
+
+        if(selectedSummaryInterval == SummaryInterval.WEEK) {
+            calendar.add(Calendar.WEEK_OF_YEAR, type);
+            startSummaryInterval = calendar.getTime();
+            calendar.add(Calendar.WEEK_OF_YEAR, 1);
+            calendar.add(Calendar.SECOND, -1);
+            endSummaryInterval = calendar.getTime();
+        }
+
+        if(selectedSummaryInterval == SummaryInterval.MONTH) {
+            calendar.add(Calendar.MONTH, type);
+            startSummaryInterval = calendar.getTime();
+            calendar.add(Calendar.MONTH, 1);
+            calendar.add(Calendar.SECOND, -1);
+            endSummaryInterval = calendar.getTime();
+        }
+
+        if(selectedSummaryInterval == SummaryInterval.YEAR) {
+            calendar.add(Calendar.YEAR, type);
+            startSummaryInterval = calendar.getTime();
+            calendar.add(Calendar.YEAR, 1);
+            calendar.add(Calendar.SECOND, -1);
+            endSummaryInterval = calendar.getTime();
+        }
+
+        DateFormat dateFormat = new SimpleDateFormat("d MMMM YYYY", new Locale("pl", "PL"));
+
+        if(selectedSummaryInterval == SummaryInterval.DAY) {
+            selectedInterval.setText(dateFormat.format(startSummaryInterval));
+        } else {
+            selectedInterval.setText(dateFormat.format(startSummaryInterval) + " - " + dateFormat.format(endSummaryInterval));
         }
     }
 }

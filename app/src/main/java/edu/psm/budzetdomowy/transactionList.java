@@ -49,34 +49,9 @@ public class transactionList extends BottomSheetDialogFragment {
         List<CTransaction> transactions = database.getTransactions(startDate, endDate);
         history = parseTransactionsToHistory(transactions);
 
-//        MockData();
         setContentViews();
 
         return v;
-    }
-
-    public void MockData() {
-        //Dodanie testowych danych
-        CBalanceSummary cb1 = new CBalanceSummary(Transaction.INCOME, null);
-        CBalanceSummary cb2 = new CBalanceSummary(Transaction.EXPENSE, Category.CLOTHES);
-        CBalanceSummary cb3 = new CBalanceSummary(Transaction.EXPENSE, Category.FOOD);
-
-        cb1.totalValue = 1455;
-        cb2.totalValue = 5468;
-        cb3.totalValue = 315;
-
-        cb1.transactions.add(new CTransaction(1, 1000, new Date(2020,10,11), Transaction.INCOME, null, ""));
-        cb1.transactions.add(new CTransaction(2, 445, new Date(2020,10,10), Transaction.INCOME, null, ""));
-
-        cb2.transactions.add(new CTransaction(3, 468, new Date(2020,10,11), Transaction.EXPENSE, Category.CLOTHES, ""));
-        cb2.transactions.add(new CTransaction(4, 3000, new Date(2020,10,10), Transaction.EXPENSE, Category.CLOTHES, "Nowe buty"));
-        cb2.transactions.add(new CTransaction(5, 2000, new Date(2020,10,9), Transaction.EXPENSE, Category.CLOTHES, ""));
-
-        cb3.transactions.add(new CTransaction(6, 315, new Date(2020,10,9), Transaction.EXPENSE, Category.FOOD, ""));
-
-        history.add(cb1);
-        history.add(cb2);
-        history.add(cb3);
     }
 
     public void setContentViews() {
