@@ -5,12 +5,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.view.SurfaceControl;
 
 import androidx.annotation.Nullable;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import edu.psm.budzetdomowy.utils.Transaction;
 
 public class CDatabase extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "HomeBudget";
@@ -114,5 +119,63 @@ public class CDatabase extends SQLiteOpenHelper {
         db.update(TRANSACTIONS_TABLE_NAME, cv, TRANSACTION_ID + "=" + id, null);
 
         db.close();
+    }
+
+    public float getIncomeForInterval(Date startDate, Date endDate) {
+        String query = "SELECT SUM(" + TRANSACTION_VALUE + ") AS income FROM " + TRANSACTIONS_TABLE_NAME + " WHERE " + TRANSACTION_DATE + " <= " + endDate.getTime() + " AND " + TRANSACTION_DATE + " >= " + startDate.getTime() + " AND " + TRANSACTION_TYPE + " = " + Transaction.INCOME;
+        float income = 0.0f;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor.moveToFirst())
+        {
+            income = cursor.getFloat(0);
+        }
+
+        cursor.close();
+        db.close();
+
+        return income;
+    }
+
+    public float getExpenseForInterval(Date startDate, Date endDate) {
+        String query = "SELECT SUM(" + TRANSACTION_VALUE + ") AS expense FROM " + TRANSACTIONS_TABLE_NAME + " WHERE " + TRANSACTION_DATE + " <= " + endDate.getTime() + " AND " + TRANSACTION_DATE + " >= " + startDate.getTime() + " AND " + TRANSACTION_TYPE + " = " + Transaction.EXPENSE;
+        float expense = 0.0f;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor.moveToFirst())
+        {
+            expense = cursor.getFloat(0);
+        }
+
+        cursor.close();
+        db.close();
+
+        return expense;
+    }
+
+    public float getAvaliableMoney() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+        float money = 0.0f;
+
+        try {
+            Date starDate = format.parse("1970-01-01");
+            Date endDate = format.parse("2070-12-31");
+
+            float income = getIncomeForInterval(starDate, endDate);
+            float expense = getExpenseForInterval(starDate, endDate);
+
+            money = income - expense;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return money;
     }
 }

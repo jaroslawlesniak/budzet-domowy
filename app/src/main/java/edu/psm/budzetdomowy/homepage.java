@@ -8,7 +8,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -37,7 +36,8 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
 
     CDatabase database = new CDatabase(this);
 
-    TextView selectedInterval;
+    TextView selectedInterval, incomeText, expenseText, avaliableMoney;
+    Button saldoButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +64,13 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
         findViewById(R.id.addIncome).setOnClickListener(this);
         findViewById(R.id.addExpense).setOnClickListener(this);
 
+        incomeText = findViewById(R.id.incomeText);
+        expenseText = findViewById(R.id.expenseText);
+        avaliableMoney = findViewById(R.id.avaliableMoney);
+        saldoButton = findViewById(R.id.saldoBtn);
+
         //Button otwierający listę transakcji
-        Button buttonOpenBottomSheet = findViewById(R.id.button2);
+        Button buttonOpenBottomSheet = findViewById(R.id.saldoBtn);
         buttonOpenBottomSheet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,6 +135,9 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
         // Określenie ostatniego dnia miesiąca
         cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
         endSummaryInterval = cal.getTime();
+
+        // Odświeżenie salda, sumy przychodów i wydatków
+        refreshSummary();
     }
 
     protected void openTransactionActivity(String category, int type) {
@@ -242,6 +250,9 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
         } else {
             selectedInterval.setText(dateFormat.format(startSummaryInterval) + " - " + dateFormat.format(endSummaryInterval));
         }
+
+        // Odświeżenie salda, sumy przychodów i wydatków
+        refreshSummary();
     }
 
     private void changeSummaryInterval(int type) {
@@ -286,6 +297,30 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
             selectedInterval.setText(dateFormat.format(startSummaryInterval));
         } else {
             selectedInterval.setText(dateFormat.format(startSummaryInterval) + " - " + dateFormat.format(endSummaryInterval));
+        }
+
+        // Odświeżenie salda, sumy przychodów i wydatków
+        refreshSummary();
+    }
+
+    public void refreshSummary() {
+        float income, expense, saldo, avaliableMoney;
+
+        income = database.getIncomeForInterval(startSummaryInterval, endSummaryInterval);
+        expense = database.getExpenseForInterval(startSummaryInterval, endSummaryInterval);
+        avaliableMoney = database.getAvaliableMoney();
+
+        saldo = income - expense;
+
+        incomeText.setText(String.format("%.2f", income) + "zł");
+        expenseText.setText(String.format("%.2f", expense) + "zł");
+        saldoButton.setText(String.format("%.2f", saldo) + "zł");
+        this.avaliableMoney.setText(String.format("%.2f", avaliableMoney) + "zł");
+
+        if(saldo < 0) {
+            saldoButton.setBackgroundResource(R.color.expenseColor);
+        } else {
+            saldoButton.setBackgroundResource(R.color.incomeColor);
         }
     }
 }
