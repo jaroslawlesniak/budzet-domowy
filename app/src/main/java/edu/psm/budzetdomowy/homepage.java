@@ -7,22 +7,34 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.navigation.NavigationView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import edu.psm.budzetdomowy.src.CDatabase;
+import edu.psm.budzetdomowy.src.CSummary;
 import edu.psm.budzetdomowy.utils.Category;
+import edu.psm.budzetdomowy.utils.CategoryColor;
 import edu.psm.budzetdomowy.utils.SummaryInterval;
 import edu.psm.budzetdomowy.utils.Transaction;
 
@@ -38,6 +50,8 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
 
     TextView selectedInterval, incomeText, expenseText, avaliableMoney;
     Button saldoButton;
+
+    TextView sport, home, entertainment, food, cosmetics, media, taxi, shopping, animals, health, transport, clothes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +82,19 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
         expenseText = findViewById(R.id.expenseText);
         avaliableMoney = findViewById(R.id.avaliableMoney);
         saldoButton = findViewById(R.id.saldoBtn);
+
+        sport = findViewById(R.id.sport);
+        home = findViewById(R.id.home);
+        entertainment = findViewById(R.id.entertainment);
+        food = findViewById(R.id.food);
+        cosmetics = findViewById(R.id.cosmetics);
+        media = findViewById(R.id.media);
+        taxi = findViewById(R.id.taxi);
+        shopping = findViewById(R.id.shopping);
+        animals = findViewById(R.id.animals);
+        health = findViewById(R.id.health);
+        transport = findViewById(R.id.transport);
+        clothes = findViewById(R.id.clothes);
 
         //Button otwierający listę transakcji
         Button buttonOpenBottomSheet = findViewById(R.id.saldoBtn);
@@ -305,10 +332,14 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
 
     public void refreshSummary() {
         float income, expense, saldo, avaliableMoney;
+        List<CSummary> categories;
 
         income = database.getIncomeForInterval(startSummaryInterval, endSummaryInterval);
         expense = database.getExpenseForInterval(startSummaryInterval, endSummaryInterval);
+        categories = database.getCategoriesSummaryCost(startSummaryInterval, endSummaryInterval);
         avaliableMoney = database.getAvaliableMoney();
+
+        int[] categoryColors = new int[categories.size()];
 
         saldo = income - expense;
 
@@ -322,5 +353,103 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
         } else {
             saldoButton.setBackgroundResource(R.color.incomeColor);
         }
+
+        animals.setText("0.00zł");
+        clothes.setText("0.00zł");
+        cosmetics.setText("0.00zł");
+        entertainment.setText("0.00zł");
+        food.setText("0.00zł");
+        health.setText("0.00zł");
+        home.setText("0.00zł");
+        media.setText("0.00zł");
+        shopping.setText("0.00zł");
+        sport.setText("0.00zł");
+        taxi.setText("0.00zł");
+        transport.setText("0.00zł");
+
+        for(int i = 0; i < categories.size(); i++) {
+            CSummary category = categories.get(i);
+
+            String value = String.format("%.2f", category.value) + "zł";
+
+            switch (category.name) {
+                case Category.ANIMALS:
+                    animals.setText(value);
+                    categoryColors[i] = CategoryColor.ANIMALS;
+                    break;
+                case Category.CLOTHES:
+                    clothes.setText(value);
+                    categoryColors[i] = CategoryColor.CLOTHES;
+                    break;
+                case Category.COSMETICS:
+                    cosmetics.setText(value);
+                    categoryColors[i] = CategoryColor.COSMETICS;
+                    break;
+                case Category.ENTERTAINMENT:
+                    entertainment.setText(value);
+                    categoryColors[i] = CategoryColor.ENTERTAINMENT;
+                    break;
+                case Category.FOOD:
+                    food.setText(value);
+                    categoryColors[i] = CategoryColor.FOOD;
+                    break;
+                case Category.HEALTH:
+                    health.setText(value);
+                    categoryColors[i] = CategoryColor.HEALTH;
+                    break;
+                case Category.HOME:
+                    home.setText(value);
+                    categoryColors[i] = CategoryColor.HOME;
+                    break;
+                case Category.MEDIA:
+                    media.setText(value);
+                    categoryColors[i] = CategoryColor.MEDIA;
+                    break;
+                case Category.SHOPPING:
+                    shopping.setText(value);
+                    categoryColors[i] = CategoryColor.SHOPPING;
+                    break;
+                case Category.SPORT:
+                    sport.setText(value);
+                    categoryColors[i] = CategoryColor.SPORT;
+                    break;
+                case Category.TAXI:
+                    taxi.setText(value);
+                    categoryColors[i] = CategoryColor.TAXI;
+                    break;
+                case Category.TRANSPORT:
+                    transport.setText(value);
+                    categoryColors[i] = CategoryColor.TRANSPORT;
+                    break;
+            }
+        }
+
+        //Przygotowanie wykresu
+        List<PieEntry> pieEntries = new ArrayList<>();
+
+        for(CSummary category : categories) {
+            pieEntries.add(new PieEntry(category.value, ""));
+        }
+
+        PieDataSet dataSet = new PieDataSet(pieEntries, "");
+        dataSet.setColors(categoryColors);
+        PieData pieData = new PieData(dataSet);
+
+        PieChart chart = findViewById(R.id.chart);
+        chart.setData(pieData);
+
+        Legend legend = chart.getLegend();
+        legend.setEnabled(false);
+
+        Description description = chart.getDescription();
+        description.setEnabled(false);
+
+        chart.setHoleRadius(60);
+        chart.setHoleColor(getResources().getColor(R.color.colorPrimary));
+        chart.setEntryLabelTextSize(0);
+        chart.setTransparentCircleColor(Color.WHITE);
+        chart.setTransparentCircleAlpha(255);
+
+        chart.invalidate();
     }
 }
