@@ -94,16 +94,25 @@ public class CDatabase extends SQLiteOpenHelper {
 
     public void deleteTransaction(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        db.rawQuery("DELETE FROM " + TRANSACTIONS_TABLE_NAME + " WHERE " + TRANSACTION_ID + " = " + id, null);
+
+        db.delete(TRANSACTIONS_TABLE_NAME, TRANSACTION_ID + "=" + id, null);
+
+        db.close();
     }
 
     public void updateTransaction(int id, float value, Date date, int type, String category, String note) {
         SQLiteDatabase db = this.getReadableDatabase();
-        db.rawQuery("UPDATE " + TRANSACTIONS_TABLE_NAME + " SET " +
-               TRANSACTION_VALUE + " = '" + value + "', " +
-               TRANSACTION_DATE + " = " + date.getTime() + ", " +
-               TRANSACTION_TYPE + " = " + type + ", " +
-               TRANSACTION_CATEGORY + " = '" + category + "', " +
-               TRANSACTION_NOTE + " = '" + note + "'", null);
+
+        ContentValues cv = new ContentValues();
+
+        cv.put(TRANSACTION_VALUE, value);
+        cv.put(TRANSACTION_DATE, date.getTime());
+        cv.put(TRANSACTION_NOTE, note);
+        cv.put(TRANSACTION_CATEGORY, category);
+        cv.put(TRANSACTION_TYPE, type);
+
+        db.update(TRANSACTIONS_TABLE_NAME, cv, TRANSACTION_ID + "=" + id, null);
+
+        db.close();
     }
 }
