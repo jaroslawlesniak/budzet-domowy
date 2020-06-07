@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import edu.psm.budzetdomowy.utils.Transaction;
@@ -177,5 +178,30 @@ public class CDatabase extends SQLiteOpenHelper {
         }
 
         return money;
+    }
+
+    public List<CSummary> getCategoriesSummaryCost(Date startDate, Date endDate) {
+        String query = "SELECT " + TRANSACTION_CATEGORY + ", SUM(" + TRANSACTION_VALUE + ") AS value FROM " + TRANSACTIONS_TABLE_NAME + " WHERE " + TRANSACTION_DATE + " <= " + endDate.getTime() + " AND " + TRANSACTION_DATE + " >= " + startDate.getTime() + " AND " + TRANSACTION_TYPE + " = " + Transaction.EXPENSE + " GROUP BY " + TRANSACTION_CATEGORY;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<CSummary> categories = new LinkedList<>();
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor.moveToFirst()) {
+            do {
+                CSummary summary = new CSummary(
+                    cursor.getString(0),
+                    cursor.getFloat(1)
+                );
+
+                categories.add(summary);
+            } while(cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return categories;
     }
 }

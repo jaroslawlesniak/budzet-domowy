@@ -19,9 +19,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import edu.psm.budzetdomowy.src.CDatabase;
+import edu.psm.budzetdomowy.src.CSummary;
 import edu.psm.budzetdomowy.utils.Category;
 import edu.psm.budzetdomowy.utils.SummaryInterval;
 import edu.psm.budzetdomowy.utils.Transaction;
@@ -38,6 +40,8 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
 
     TextView selectedInterval, incomeText, expenseText, avaliableMoney;
     Button saldoButton;
+
+    TextView sport, home, entertainment, food, cosmetics, media, taxi, shopping, animals, health, transport, clothes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,19 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
         expenseText = findViewById(R.id.expenseText);
         avaliableMoney = findViewById(R.id.avaliableMoney);
         saldoButton = findViewById(R.id.saldoBtn);
+
+        sport = findViewById(R.id.sport);
+        home = findViewById(R.id.home);
+        entertainment = findViewById(R.id.entertainment);
+        food = findViewById(R.id.food);
+        cosmetics = findViewById(R.id.cosmetics);
+        media = findViewById(R.id.media);
+        taxi = findViewById(R.id.taxi);
+        shopping = findViewById(R.id.shopping);
+        animals = findViewById(R.id.animals);
+        health = findViewById(R.id.health);
+        transport = findViewById(R.id.transport);
+        clothes = findViewById(R.id.clothes);
 
         //Button otwierający listę transakcji
         Button buttonOpenBottomSheet = findViewById(R.id.saldoBtn);
@@ -305,10 +322,12 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
 
     public void refreshSummary() {
         float income, expense, saldo, avaliableMoney;
+        List<CSummary> categories;
 
         income = database.getIncomeForInterval(startSummaryInterval, endSummaryInterval);
         expense = database.getExpenseForInterval(startSummaryInterval, endSummaryInterval);
         avaliableMoney = database.getAvaliableMoney();
+        categories = database.getCategoriesSummaryCost(startSummaryInterval, endSummaryInterval);
 
         saldo = income - expense;
 
@@ -321,6 +340,49 @@ public class homepage extends AppCompatActivity implements View.OnClickListener 
             saldoButton.setBackgroundResource(R.color.expenseColor);
         } else {
             saldoButton.setBackgroundResource(R.color.incomeColor);
+        }
+
+        for(CSummary category : categories) {
+            String value = String.format("%.2f", category.value) + "zł";
+
+            switch (category.name) {
+                case Category.ANIMALS:
+                    animals.setText(value);
+                    break;
+                case Category.CLOTHES:
+                    clothes.setText(value);
+                    break;
+                case Category.COSMETICS:
+                    cosmetics.setText(value);
+                    break;
+                case Category.ENTERTAINMENT:
+                    entertainment.setText(value);
+                    break;
+                case Category.FOOD:
+                    food.setText(value);
+                    break;
+                case Category.HEALTH:
+                    health.setText(value);
+                    break;
+                case Category.HOME:
+                    home.setText(value);
+                    break;
+                case Category.MEDIA:
+                    media.setText(value);
+                    break;
+                case Category.SHOPPING:
+                    shopping.setText(value);
+                    break;
+                case Category.SPORT:
+                    sport.setText(value);
+                    break;
+                case Category.TAXI:
+                    taxi.setText(value);
+                    break;
+                case Category.TRANSPORT:
+                    transport.setText(value);
+                    break;
+            }
         }
     }
 }
