@@ -1,20 +1,30 @@
 package edu.psm.budzetdomowy;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -38,6 +48,11 @@ public class transactionList extends BottomSheetDialogFragment {
     List<CBalanceSummary> history = new LinkedList<>();
     Date startDate, endDate;
     CDatabase database;
+    private ActionMode mActionMode;
+    transactionList context = this;
+
+
+
 
     @Nullable
     @Override
@@ -137,14 +152,37 @@ public class transactionList extends BottomSheetDialogFragment {
             });
 
             // Dodanie wszystkich transakcji dla danej kategorii
-            for(CTransaction transaction : category.transactions) {
+            for(final CTransaction transaction : category.transactions) {
                 View view = getLayoutInflater().inflate(R.layout.transactions_layout, null);
 
                 TextView price = view.findViewById(R.id.totalValue);
                 TextView date = view.findViewById(R.id.date);
                 TextView note = view.findViewById(R.id.note);
                 TextView icon = view.findViewById(R.id.icon);
-                ConstraintLayout transactionLayout = view.findViewById(R.id.layout);
+                ImageButton deleteTransaction = view.findViewById(R.id.button);
+                final ConstraintLayout transactionLayout = view.findViewById(R.id.layout);
+
+                deleteTransaction.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        Toast.makeText(getContext(),"Przytrzymaj, by usunąć.",Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+                deleteTransaction.setOnLongClickListener(new View.OnLongClickListener() {
+                     public boolean onLongClick(View v) {
+                         System.out.println("id elementu" + transaction.id);
+                         database.deleteTransaction(transaction.id);
+                         context.dismiss();
+                         List<CTransaction> transactions = database.getTransactions(startDate, endDate);
+                         history = parseTransactionsToHistory(transactions);
+
+                         setContentViews();
+                         return true;
+                     }
+                });
+
+
 
                 DateFormat dateFormat = new SimpleDateFormat("d MMMM", new Locale("pl", "PL"));
                 date.setText(dateFormat.format(transaction.date.getTime()));
@@ -223,4 +261,6 @@ public class transactionList extends BottomSheetDialogFragment {
 
         return index;
     }
+
+
 }
