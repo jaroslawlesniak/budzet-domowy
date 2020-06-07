@@ -102,7 +102,7 @@ public class CDatabase extends SQLiteOpenHelper {
 
     public void updateTransaction(int id, float value, Date date, int type, String category, String note) {
         SQLiteDatabase db = this.getReadableDatabase();
-
+      
         ContentValues cv = new ContentValues();
 
         cv.put(TRANSACTION_VALUE, value);
