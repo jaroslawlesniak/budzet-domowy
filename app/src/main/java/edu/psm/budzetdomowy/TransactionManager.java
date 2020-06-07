@@ -295,7 +295,7 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
                 if(sb.length()>0) tvKwota.setText(sb);
                 else tvKwota.setText("Wpisz kwotę");
                 break;
-            case R.id.calcClear: //działa
+            case R.id.calcClear:
                 sb.delete(0, sb.length());
                 tvKwota.setText("Wpisz kwotę");
                 indexOfSign = -1;
@@ -313,7 +313,6 @@ public class TransactionManager extends AppCompatActivity implements View.OnClic
 
         // jeśli usuwa coś po przecinku
         if(isDot>0) isDot--;
-
 
         //jeśli usuwa znak
         if(sb.length()-1==indexOfSign) { // trzeba dać znać jakoś czy była już kropka i ile miejsc po niej

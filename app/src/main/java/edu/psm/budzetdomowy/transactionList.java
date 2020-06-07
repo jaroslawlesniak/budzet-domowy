@@ -171,7 +171,7 @@ public class transactionList extends BottomSheetDialogFragment {
 
                 transactionLayout.setOnLongClickListener(new View.OnLongClickListener() {
                      public boolean onLongClick(View v) {
-                         System.out.println("działa long click");
+                         System.out.println("id elementu" + v.getId());
                          OptionDialog optionDialog = new OptionDialog();
                          optionDialog.show(getFragmentManager(), "cokolwiek");
                          return true;

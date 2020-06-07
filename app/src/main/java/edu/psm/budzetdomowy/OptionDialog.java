@@ -14,12 +14,12 @@ import edu.psm.budzetdomowy.src.CDatabase;
 
 public class OptionDialog extends DialogFragment {
 
-    CDatabase cDatabase = new CDatabase(this);
-
+    CDatabase cDatabase = new CDatabase(this.getContext());
+//
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         // Use the Builder class for convenient dialog construction
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_DARK);
         builder.setMessage("Wybierz opcję")
                 .setPositiveButton("Edytuj", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -28,7 +28,8 @@ public class OptionDialog extends DialogFragment {
                 })
                 .setNegativeButton("Usuń", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        cDatabase.deleteTransaction(1200);
+                        System.out.println(id);
+//                        cDatabase.deleteTransaction(id);
                         //trzeba przesłać id
                     }
                 });
@@ -37,7 +38,7 @@ public class OptionDialog extends DialogFragment {
     }
 
     public void goToAnActivity() {
-        Intent intent = new Intent(this, TransactionManager.class);
+        Intent intent = new Intent(OptionDialog.this.getActivity(), TransactionManager.class);
         startActivity(intent);
         //trzeba przesłać wartości do wypełnienia
     }
